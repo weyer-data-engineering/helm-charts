@@ -1,0 +1,14 @@
+image:
+  tag: "1.2.6"
+  pullPolicy: Always
+
+imagePullSecrets:
+  - name: docker-aiteza
+
+ingress:
+  enabled: true
+  ingresscClassName: traefik
+  hosts:
+    - host: frontend.local
+      path: /
+  tls: []
