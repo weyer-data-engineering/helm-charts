@@ -99,9 +99,9 @@ data:
           model: {{ $model.model | quote }}
           name: {{ $model.name | quote }}
           description: {{ $model.description | quote }}
-          default-model: {{ $model.default-model | default false }}
+          default-model: {{ $model.defaultModel | default false }}
           enabled: {{ $model.enabled | default false }}
-          multi-modal: {{ $model.multi-modal | default false }}
+          multi-modal: {{ $model.multiModal | default false }}
           icon: {{ $model.icon | quote }}
           type: {{ $model.type | quote }}
           endpoint: {{ $model.endpoint | quote }}
