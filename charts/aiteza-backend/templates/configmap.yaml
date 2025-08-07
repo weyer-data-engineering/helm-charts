@@ -93,8 +93,8 @@ data:
       chatNameModel: {{ required "aiteza.chatNameModel is required!" .Values.aiteza.chatNameModel | quote }}
       repromptModel: {{ required "aiteza.repromptModel is required!" .Values.aiteza.repromptModel | quote }}
       models:
-{{- $models := required "aiteza.models is required!" .Values.aiteza.models }}
-{{- range $modelName, $model := $models }}
+      {{- $models := required "aiteza.models is required!" .Values.aiteza.models }}
+      {{- range $modelName, $model := $models }}
         {{ $modelName }}:
           model: {{ $model.model | quote }}
           name: {{ $model.name | quote }}
@@ -107,8 +107,8 @@ data:
           endpoint: {{ $model.endpoint | quote }}
           chunks: {{ $model.chunks | default 20 }}
           api-key: ${AITEZA_{{ upper $modelName | replace "-" "_" }}_API_KEY}
-{{- if $model.options }}
+          {{- if $model.options }}
           options:
-{{ toYaml $model.options | indent 12 }}
-{{- end }}
-{{- end }}
+          {{ toYaml $model.options | indent 12 }}
+      {{- end }}
+      {{- end }}
