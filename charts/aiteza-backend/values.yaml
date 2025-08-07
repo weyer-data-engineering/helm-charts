@@ -1,0 +1,53 @@
+image:
+  repository: ghcr.io/weyer-data-engineering/aiteza-backend
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullNameOverride: aiteza-backend
+
+timeZone: "Europe/Berlin"
+
+service:
+  annotations: {}
+  type: ClusterIP
+  ClusterIP:
+  httpPort: 80
+
+ingress:
+  enabled: true
+  annotations: {}
+  hosts:
+  tls: []
+
+serviceAccount:
+  create: false
+
+replicaCount: 1
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 250m
+  limits:
+    memory: 512Mi
+    cpu: 500m
+podAnnotations: {}
+
+startupProbe:
+  failureThreshold: 10
+  initialDelaySeconds: 10
+  timeoutSeconds: 3
+  periodSeconds: 2
+
+readinessProbe:
+  failureThreshold: 3
+  initialDelaySeconds: 1
+  timeoutSeconds: 3
+  periodSeconds: 5
+
+livenessProbe:
+  failureThreshold: 1
+  initialDelaySeconds: 1
+  timeoutSeconds: 3
+  periodSeconds: 60

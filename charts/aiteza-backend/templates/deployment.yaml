@@ -1,0 +1,123 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aiteza-backend.fullname" . }}
+  labels:
+    {{- include "aiteza-backend.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "aiteza-backend.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "aiteza-backend.labels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "aiteza-backend.serviceAccountName" . }}
+      containers:
+        - name: aiteza-backend
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - mountPath: /app/application.yml
+              name: config
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.httpPort }}
+              protocol: TCP
+          env:
+            - name: JDK_JAVA_OPTIONS
+              value: {{ .Values.javaOptions }}
+            {{- range $modelName, $model := .Values.aiteza.models }}
+            {{- if $model.secretRef }}
+            - name: AITEZA_{{ upper $modelName | replace "-" "_" }}_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $model.secretRef.name }}
+                  key: {{ $model.secretRef.keys.apiKey }}
+            {{- end }}
+            {{- end }}
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "aiteza.database.postgres.secretRef.name is required!" .Values.aiteza.database.postgres.secretRef.name }}
+                  key: {{ required "aiteza.database.postgres.secretRef.keys.postgresUser is required" .Values.aiteza.database.postgres.secretRef.keys.postgresUser }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "aiteza.database.postgres.secretRef.name is required!" .Values.aiteza.database.postgres.secretRef.name }}
+                  key: {{ required "aiteza.database.postgres.secretRef.keys.postgresPassword is required" .Values.aiteza.database.postgres.secretRef.keys.postgresPassword }}
+            - name: KEYCLOAK_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "aiteza.keycloak.secretRef.name is required!" .Values.aiteza.keycloak.secretRef.name }}
+                  key: {{ required "aiteza.keycloak.secretRef.keys.adminUsername is required" .Values.aiteza.keycloak.secretRef.keys.adminUsername }}
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "aiteza.keycloak.secretRef.name is required!" .Values.aiteza.keycloak.secretRef.name }}
+                  key: {{ required "aiteza.keycloak.secretRef.keys.adminPassword is required" .Values.aiteza.keycloak.secretRef.keys.adminPassword }}
+            - name: FIRECRAWL_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "aiteza.etl.firecrawl.secretRef.name is required!" .Values.aiteza.etl.firecrawl.secretRef.name }}
+                  key: {{ required "aiteza.etl.firecrawl.secretRef.keys.apiKey is required" .Values.aiteza.etl.firecrawl.secretRef.keys.apiKey }}
+            {{- if .Values.s3.enabled }}
+            - name: S3_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "s3.secretRef.name is required when s3.enabled is true" .Values.s3.secretRef.name }}
+                  key: {{ required "s3.secretRef.keys.accessKey is required" .Values.s3.secretRef.keys.accessKey }}
+            - name: S3_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.s3.secretRef.name }}
+                  key: {{ required "s3.secretRef.keys.secretKey is required" .Values.s3.secretRef.keys.secretKey }}
+            {{- end }}
+            - name: TZ
+              value: {{ .Values.timeZone | quote }}
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            failureThreshold: {{ .failureThreshold }}
+            initialDelaySeconds: {{ .initialDelaySeconds }}
+            periodSeconds: {{ .periodSeconds }}
+            timeoutSeconds: {{ .timeoutSeconds }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            failureThreshold: {{ .failureThreshold }}
+            initialDelaySeconds: {{ .initialDelaySeconds }}
+            periodSeconds: {{ .periodSeconds }}
+            timeoutSeconds: {{ .timeoutSeconds }}
+          {{- end }}
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            httpGet:
+              path: /
+              port: http
+            failureThreshold: {{ .failureThreshold }}
+            initialDelaySeconds: {{ .initialDelaySeconds }}
+            periodSeconds: {{ .periodSeconds }}
+            timeoutSeconds: {{ .timeoutSeconds }}
+          {{- end}}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "aiteza-backend.fullname" . }}

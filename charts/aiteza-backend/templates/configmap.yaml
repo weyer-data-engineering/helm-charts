@@ -1,0 +1,114 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "aiteza-backend.fullname" . }}
+  labels:
+  {{- include "aiteza-backend.labels" . | nindent 4 }}
+data:
+  application.yaml: |-
+    spring:
+      security:
+        oauth2:
+          resourceserver:
+            jwt:
+              issuer-uri: {{ required "spring.security.oauth2.resourceserver.jwt.issuerUri is required!" .Values.spring.security.oauth2.resourceserver.jwt.issuerUri | quote }}
+              audiences: {{ .Values.spring.security.oauth2.resourceserver.jwt.audiences | default "account" | quote }}
+      ai:
+        openai:
+          base-url: {{ required "spring.ai.openai.baseUrl is required!" .Values.spring.ai.openai.baseUrl | quote }}
+          chat:
+            enabled: false
+          embedding:
+            enabled: true
+            options:
+              model: "nomic-embed-text:v1.5"
+              temperature: 0.2
+
+    server:
+      port: 80
+
+    springdoc:
+      swagger-ui:
+        oauth:
+          client-id: {{ required "springdoc.swaggerUi.oauth.clientId is required!" .Values.springdoc.swaggerUi.oauth.clientId | quote }}
+
+    s3:
+      enabled: {{ .Values.s3.enabled | default false }}
+      {{- if .Values.s3.enabled }}
+      endpoint: {{ required "s3.endpoint is required when s3.enabled is true" .Values.s3.endpoint | quote }}
+      region: {{ required "s3.region is required when s3.enabled is true" .Values.s3.region | quote }}
+      bucket-name: {{ required "s3.bucket is required when s3.enabled is true" .Values.s3.bucket | quote }}
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+      {{- end }}
+
+    aiteza:
+      security:
+        public-paths:
+          - "/v3/api-docs/**"
+          - "/doc/**"
+          - "/actuator/**"
+          - "/v1/**"
+      frontend-origin: {{ required "aiteza.frontendOrigin is required!" .Values.aiteza.frontendOrigin | quote }}
+      schedule:
+        websource-cleaner: "0 0/5 * * * *"
+      database:
+        connection-pool:
+          min-idle: 5
+          max: 90
+          idle-timeout: 5000
+        postgres:
+          host: {{ required "aiteza.database.postgres.host is required!" .Values.aiteza.database.postgres.host | quote }}
+          port: 5432
+          login: ${POSTGRES_USER}
+          password: ${POSTGRES_PASSWORD}
+          database: {{ .Values.aiteza.database.postgres.database | default "aiteza" | quote }}
+          schema: public
+      keycloak:
+        authServerUrl: {{ required "aiteza.keycloak.authServerUrl is required!" .Values.aiteza.keycloak.authServerUrl | quote }}
+        realm: {{ required "aiteza.keycloak.realm is required!" .Values.aiteza.keycloak.realm | quote }}
+        clientId: {{ required "aiteza.keycloak.clientId is required!" .Values.aiteza.keycloak.clientId | quote }}
+        adminUsername: ${KEYCLOAK_ADMIN_USERNAME}
+        adminPassword: ${KEYCLOAK_ADMIN_PASSWORD}
+      etl:
+        tika:
+          endpoint: {{ required "aiteza.etl.tika.endpoint is required!" .Values.aiteza.etl.tika.endpoint | quote }}
+        docling:
+          enabled: {{ .Values.aiteza.etl.docling.enabled | default true }}
+          {{- if .Values.aiteza.etl.docling.enabled }}
+          base-url: {{ required "aiteza.etl.docling.baseUrl is required!" .Values.aiteza.etl.docling.baseUrl | quote }}
+          convert-endpoint: "/v1/convert/file"
+          convert-async-endpoint: "/v1/convert/source/async"
+          result-endpoint: "/v1/result"
+          status-endpoint: "/v1/status/poll"
+          do-ocr: true
+          ocr-engine: easyocr
+          pdf-backend: dlparse_v4
+          table-mode: accurate
+        firecrawl:
+          max-subpages: 200
+          max-depth: 3
+          endpoint: "https://api.firecrawl.dev"
+          api-key: ${FIRECRAWL_API_KEY}
+      chatNameModel: {{ required "aiteza.chatNameModel is required!" .Values.aiteza.chatNameModel | quote }}
+      repromptModel: {{ required "aiteza.repromptModel is required!" .Values.aiteza.repromptModel | quote }}
+      models:
+{{- $models := required "aiteza.models is required!" .Values.aiteza.models }}
+{{- range $modelName, $model := $models }}
+        {{ $modelName }}:
+          model: {{ $model.model | quote }}
+          name: {{ $model.name | quote }}
+          description: {{ $model.description | quote }}
+          default-model: {{ $model.default-model | default false }}
+          enabled: {{ $model.enabled | default false }}
+          multi-modal: {{ $model.multi-modal | default false }}
+          icon: {{ $model.icon | quote }}
+          type: {{ $model.type | quote }}
+          endpoint: {{ $model.endpoint | quote }}
+          chunks: {{ $model.chunks | default 20 }}
+          api-key: ${AITEZA_{{ upper $modelName | replace "-" "_" }}_API_KEY}
+{{- if $model.options }}
+          options:
+{{ toYaml $model.options | indent 12 }}
+{{- end }}
+{{- end }}
