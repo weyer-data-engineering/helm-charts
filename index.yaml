@@ -3,6 +3,16 @@ entries:
   aiteza-backend:
   - apiVersion: v2
     appVersion: 1.2.7
+    created: "2025-08-07T16:14:42.769477188Z"
+    description: A Helm chart for AITEZA Backend
+    digest: 6bea2aa7943a17dcaab7273deda7b7b537ea7365a352eba405808492e2093f89
+    name: aiteza-backend
+    type: application
+    urls:
+    - https://github.com/weyer-data-engineering/helm-charts/releases/download/aiteza-backend-1.2.7/aiteza-backend-1.2.7.tgz
+    version: 1.2.7
+  - apiVersion: v2
+    appVersion: 1.2.7
     created: "2025-08-07T15:57:58.845908923Z"
     description: A Helm chart for AITEZA Backend
     digest: 4bd36ca0274bec89bd3d689f1e807f736ace76201b30e09b004f21cb266a52fc
@@ -32,4 +42,4 @@ entries:
     urls:
     - https://github.com/weyer-data-engineering/helm-charts/releases/download/aiteza-frontend-1.0.0/aiteza-frontend-1.0.0.tgz
     version: 1.0.0
-generated: "2025-08-07T15:57:58.845922359Z"
+generated: "2025-08-07T16:14:42.989330843Z"
