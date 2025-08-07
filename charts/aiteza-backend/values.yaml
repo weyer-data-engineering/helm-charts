@@ -9,6 +9,50 @@ fullNameOverride: aiteza-backend
 
 timeZone: "Europe/Berlin"
 
+aiteza:
+  database:
+    postgres:
+      secretRef:
+        name: ""
+        keys:
+          postgresUser: ""
+          postgresPassword: ""
+  keycloak:
+    secretRef:
+      name: ""
+      keys:
+        adminUsername: ""
+        adminPassword: ""
+  etl:
+    tika:
+      endpoint: ""
+    docling:
+      enabled: true
+    firecrawl:
+      secretRef:
+        name: ""
+        keys:
+          apiKey: ""
+  models: {}
+
+s3:
+  enabled: false
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuerUri: ""
+  ai:
+    openai:
+      baseUrl: ""
+
+springdoc:
+  swaggerUi:
+    oauth:
+      clientId: ""
+
 service:
   annotations: {}
   type: ClusterIP

@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "aiteza-backend.fullname" . }}
   labels:
-  {{- include "aiteza-backend.labels" . | nindent 4 }}
+    {{- include "aiteza-backend.labels" . | nindent 4 }}
 data:
   application.yaml: |-
     spring:
@@ -34,13 +34,13 @@ data:
 
     s3:
       enabled: {{ .Values.s3.enabled | default false }}
-      {{- if .Values.s3.enabled }}
+{{- if .Values.s3.enabled }}
       endpoint: {{ required "s3.endpoint is required when s3.enabled is true" .Values.s3.endpoint | quote }}
       region: {{ required "s3.region is required when s3.enabled is true" .Values.s3.region | quote }}
       bucket-name: {{ required "s3.bucket is required when s3.enabled is true" .Values.s3.bucket | quote }}
       access-key: ${S3_ACCESS_KEY}
       secret-key: ${S3_SECRET_KEY}
-      {{- end }}
+{{- end }}
 
     aiteza:
       security:
@@ -75,7 +75,7 @@ data:
           endpoint: {{ required "aiteza.etl.tika.endpoint is required!" .Values.aiteza.etl.tika.endpoint | quote }}
         docling:
           enabled: {{ .Values.aiteza.etl.docling.enabled | default true }}
-          {{- if .Values.aiteza.etl.docling.enabled }}
+{{- if .Values.aiteza.etl.docling.enabled }}
           base-url: {{ required "aiteza.etl.docling.baseUrl is required!" .Values.aiteza.etl.docling.baseUrl | quote }}
           convert-endpoint: "/v1/convert/file"
           convert-async-endpoint: "/v1/convert/source/async"
@@ -85,6 +85,7 @@ data:
           ocr-engine: easyocr
           pdf-backend: dlparse_v4
           table-mode: accurate
+{{- end }}
         firecrawl:
           max-subpages: 200
           max-depth: 3
@@ -93,8 +94,8 @@ data:
       chatNameModel: {{ required "aiteza.chatNameModel is required!" .Values.aiteza.chatNameModel | quote }}
       repromptModel: {{ required "aiteza.repromptModel is required!" .Values.aiteza.repromptModel | quote }}
       models:
-      {{- $models := required "aiteza.models is required!" .Values.aiteza.models }}
-      {{- range $modelName, $model := $models }}
+{{- $models := required "aiteza.models is required!" .Values.aiteza.models }}
+{{- range $modelName, $model := $models }}
         {{ $modelName }}:
           model: {{ $model.model | quote }}
           name: {{ $model.name | quote }}
@@ -107,8 +108,8 @@ data:
           endpoint: {{ $model.endpoint | quote }}
           chunks: {{ $model.chunks | default 20 }}
           api-key: ${AITEZA_{{ upper $modelName | replace "-" "_" }}_API_KEY}
-          {{- if $model.options }}
+{{- if $model.options }}
           options:
-          {{ toYaml $model.options | indent 12 }}
-      {{- end }}
-      {{- end }}
+{{ toYaml $model.options | indent 12 }}
+{{- end }}
+{{- end }}

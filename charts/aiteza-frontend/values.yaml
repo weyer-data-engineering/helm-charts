@@ -10,11 +10,11 @@ fullNameOverride: aiteza-frontend
 timeZone: "Europe/Berlin"
 
 aiteza:
-  backendUrl: https://app.aiteza.ai
+  backendUrl: ""
   keycloak:
-    url: https://auth.weyer-data-engineering.com
-    realm: aiteza
-    clientId: aiteza-frontend
+    url: ""
+    realm: ""
+    clientId: ""
 
 service:
   annotations: {}

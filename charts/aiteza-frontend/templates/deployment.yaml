@@ -33,14 +33,14 @@ spec:
               protocol: TCP
           env:
             - name: BACKEND_URL
-              value: {{ .Values.aiteza.backendUrl | quote }}
+              value: {{ required "aiteza.backendUrl is required!" .Values.aiteza.backendUrl | quote }}
             {{- with .Values.aiteza.keycloak }}
             - name: KEYCLOAK_URL
-              value: {{ .url | quote }}
+              value: {{ required "aiteza.backendUrl.url is required!" .url | quote }}
             - name: KEYCLOAK_REALM
-              value: {{ .realm | quote }}
+              value: {{ required "aiteza.backendUrl.realm is required!" .realm | quote }}
             - name: KEYCLOAK_CLIENT_ID
-              value: {{ .clientId | quote }}
+              value: {{ required "aiteza.backendUrl.clientId is required!" .clientId | quote }}
             {{- end }}
             - name: TZ
               value: {{ .Values.timeZone | quote }}
