@@ -5,10 +5,15 @@ image:
 imagePullSecrets:
   - name: docker-aiteza
 
+aiteza:
+  backendUrl: http://backend.local
+  keycloak:
+    url: http://auth.local
+    realm: local
+    clientId: test
+
 ingress:
   enabled: true
   ingresscClassName: traefik
-  hosts:
-    - host: frontend.local
-      path: /
+  host: frontend.local
   tls: []

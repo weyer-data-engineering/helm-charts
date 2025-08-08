@@ -36,14 +36,14 @@ spec:
               value: {{ required "aiteza.backendUrl is required!" .Values.aiteza.backendUrl | quote }}
             {{- with .Values.aiteza.keycloak }}
             - name: KEYCLOAK_URL
-              value: {{ required "aiteza.backendUrl.url is required!" .url | quote }}
+              value: {{ required "aiteza.keycloak.url is required!" .url | quote }}
             - name: KEYCLOAK_REALM
-              value: {{ required "aiteza.backendUrl.realm is required!" .realm | quote }}
+              value: {{ required "aiteza.keycloak.realm is required!" .realm | quote }}
             - name: KEYCLOAK_CLIENT_ID
-              value: {{ required "aiteza.backendUrl.clientId is required!" .clientId | quote }}
+              value: {{ required "aiteza.keycloak.clientId is required!" .clientId | quote }}
             {{- end }}
             - name: TZ
-              value: {{ .Values.timeZone | quote }}
+              value: {{ .Values.timeZone | default "Europe/Berlin" | quote }}
           {{- with .Values.livenessProbe }}
           livenessProbe:
             httpGet:

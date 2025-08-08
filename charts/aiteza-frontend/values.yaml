@@ -7,8 +7,6 @@ imagePullSecrets: []
 nameOverride: ""
 fullNameOverride: aiteza-frontend
 
-timeZone: "Europe/Berlin"
-
 aiteza:
   backendUrl: ""
   keycloak:
