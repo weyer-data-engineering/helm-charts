@@ -26,16 +26,35 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ required "ingress.host is required" .Values.ingress.host | quote }}
       http:
         paths:
-          - path: {{ .path }}
-            pathType: {{ default "ImplementationSpecific" .pathType }}
+          - path: /api
+            pathType: Prefix
             backend:
               service:
                 name: {{ $fullName }}
                 port:
                   number: 80
-  {{- end }}
+          - path: /v1
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: 80
+          - path: /doc
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: 80
+          - path: /v3/api-docs
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: 80
 {{- end }}

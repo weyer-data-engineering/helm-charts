@@ -5,10 +5,47 @@ image:
 imagePullSecrets:
   - name: docker-aiteza
 
+aiteza:
+  chatNameModel: model1
+  repromptModel: model1
+  frontendOrigin: http://frontend.local
+  database:
+    postgres:
+      host: database.local
+      secretRef:
+        name: aiteza-database-postgres-secret
+  keycloak:
+    authServerUrl: http://auth.local
+    realm: local
+    clientId: test
+    secretRef:
+      name: aiteza-keycloak-secret
+  etl:
+    firecrawl:
+      secretRef:
+        name: aiteza-etl-firecrawl-secret
+    docling:
+      baseUrl: http://docling.local
+    tika:
+      endpoint: http://tika.local
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuerUri: http://auth.local
+  ai:
+    openai:
+      baseUrl: http://openai.local
+
+springdoc:
+  swaggerUi:
+    oauth:
+      clientId: test
+
 ingress:
   enabled: true
   ingresscClassName: traefik
-  hosts:
-    - host: frontend.local
-      path: /
+  host: frontend.local
   tls: []
