@@ -28,7 +28,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
-            - mountPath: application.yml
+            - mountPath: /
               name: config
           ports:
             - name: http
