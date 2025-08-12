@@ -78,7 +78,7 @@ podAnnotations: {}
 
 startupProbe:
   failureThreshold: 10
-  initialDelaySeconds: 10
+  initialDelaySeconds: 30
   timeoutSeconds: 3
   periodSeconds: 2
 
