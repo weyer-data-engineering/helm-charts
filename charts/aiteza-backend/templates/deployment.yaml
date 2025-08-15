@@ -96,7 +96,7 @@ spec:
           {{- with .Values.livenessProbe }}
           livenessProbe:
             httpGet:
-              path: /
+              path: /actuator/health
               port: http
             failureThreshold: {{ .failureThreshold }}
             initialDelaySeconds: {{ .initialDelaySeconds }}
@@ -106,7 +106,7 @@ spec:
           {{- with .Values.readinessProbe }}
           readinessProbe:
             httpGet:
-              path: /
+              path: /actuator/health
               port: http
             failureThreshold: {{ .failureThreshold }}
             initialDelaySeconds: {{ .initialDelaySeconds }}
@@ -116,7 +116,7 @@ spec:
           {{- with .Values.startupProbe }}
           startupProbe:
             httpGet:
-              path: /
+              path: /actuator/health
               port: http
             failureThreshold: {{ .failureThreshold }}
             initialDelaySeconds: {{ .initialDelaySeconds }}
