@@ -51,6 +51,11 @@ springdoc:
     oauth:
       clientId: ""
 
+# A list of Kubernetes Secret objects that will be exported to the ATIEZA
+#  pod as environment variables.
+environmentSecrets: []
+  # - aiteza-envsecrets
+
 service:
   annotations: {}
   type: ClusterIP

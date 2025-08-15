@@ -44,6 +44,8 @@ springdoc:
     oauth:
       clientId: test
 
+environmentSecrets: []
+
 ingress:
   enabled: true
   ingresscClassName: traefik

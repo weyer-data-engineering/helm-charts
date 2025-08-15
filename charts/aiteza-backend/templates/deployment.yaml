@@ -88,6 +88,11 @@ spec:
             {{- end }}
             - name: TZ
               value: {{ .Values.timeZone | default "Europe/Berlin" | quote }}
+          envFrom:
+          {{- range .Values.environmentSecrets }}
+            - secretRef:
+                name: {{ . }}
+          {{- end }}
           {{- with .Values.livenessProbe }}
           livenessProbe:
             httpGet:
