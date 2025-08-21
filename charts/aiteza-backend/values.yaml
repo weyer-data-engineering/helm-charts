@@ -34,7 +34,9 @@ aiteza:
   models: {}
 
 s3:
-  enabled: false
+  enabled: true
+  secretRef:
+    keys: {}
 
 spring:
   security:

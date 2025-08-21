@@ -29,6 +29,15 @@ aiteza:
     tika:
       endpoint: http://tika.local
 
+s3:
+  enabled: true
+  endpoint: https://s3.local
+  region: eu-1
+  bucketName: aiteza-bucket
+  secretRef:
+    name: aiteza-s3-secret
+    keys: {}
+
 spring:
   security:
     oauth2:
