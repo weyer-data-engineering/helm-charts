@@ -86,13 +86,13 @@ spec:
             - name: S3_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ required "s3.secretRef.name is required when s3.enabled is true" .Values.s3.secretRef.name }}
-                  key: {{ required "s3.secretRef.keys.accessKey is required" .Values.s3.secretRef.keys.accessKey }}
+                  name: {{ required "s3.secretRef.name is required!" .Values.s3.secretRef.name }}
+                  key: {{ s3.secretRef.keys.accessKey | default "accessKey" }}
             - name: S3_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.s3.secretRef.name }}
-                  key: {{ required "s3.secretRef.keys.secretKey is required" .Values.s3.secretRef.keys.secretKey }}
+                  name: {{ required "s3.secretRef.name is required!" .Values.s3.secretRef.name }}
+                  key: {{ .Values.s3.secretRef.keys.secretKey| default "secretKey" }}
             {{- end }}
             - name: TZ
               value: {{ .Values.timeZone | default "Europe/Berlin" | quote }}
