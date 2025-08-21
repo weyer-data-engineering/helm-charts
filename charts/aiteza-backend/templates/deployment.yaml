@@ -87,7 +87,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ required "s3.secretRef.name is required!" .Values.s3.secretRef.name }}
-                  key: {{ s3.secretRef.keys.accessKey | default "accessKey" }}
+                  key: {{ .Values.s3.secretRef.keys.accessKey | default "accessKey" }}
             - name: S3_SECRET_KEY
               valueFrom:
                 secretKeyRef:
