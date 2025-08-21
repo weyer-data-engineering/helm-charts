@@ -92,7 +92,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ required "s3.secretRef.name is required!" .Values.s3.secretRef.name }}
-                  key: {{ .Values.s3.secretRef.keys.secretKey| default "secretKey" }}
+                  key: {{ .Values.s3.secretRef.keys.secretKey | default "secretKey" }}
             {{- end }}
             - name: TZ
               value: {{ .Values.timeZone | default "Europe/Berlin" | quote }}
