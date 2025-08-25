@@ -60,3 +60,6 @@ ingress:
   ingresscClassName: traefik
   host: frontend.local
   tls: []
+
+nodeSelector:
+  run: application
