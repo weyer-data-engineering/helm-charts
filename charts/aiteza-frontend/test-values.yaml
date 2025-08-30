@@ -1,7 +1,3 @@
-image:
-  tag: "1.3.0"
-  pullPolicy: Always
-
 imagePullSecrets:
   - name: docker-aiteza
 
@@ -16,7 +12,13 @@ ingress:
   enabled: true
   ingresscClassName: traefik
   host: frontend.local
-  tls: []
+  tls:
+    secretName: frontend-local-tls
 
-nodeSelector:
-  run: application
+securityContext: # in test
+  runAsNonRoot: false
+  runAsUser: 
+  runAsGroup: 
+  allowPrivilegeEscalation: false
+  seccompProfile:
+    type: RuntimeDefault

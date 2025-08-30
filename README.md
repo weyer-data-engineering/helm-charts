@@ -13,3 +13,8 @@ helm template -f charts/aiteza-frontend/test-values.yaml charts/aiteza-frontend
 
 helm template -f charts/aiteza-backend/test-values.yaml charts/aiteza-backend
 ```
+
+Local testing
+```
+helm upgrade --install aiteza-frontend ./charts/aiteza-frontend -n demo -f ./charts/aiteza-frontend/test-values.yaml
+```
