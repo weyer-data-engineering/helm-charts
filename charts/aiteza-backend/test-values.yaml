@@ -58,8 +58,9 @@ environmentSecrets: []
 ingress:
   enabled: true
   ingresscClassName: traefik
-  host: frontend.local
-  tls: []
+  host: backend.local
+  tls:
+    secretName: backend-local-tls
 
 nodeSelector:
   run: application

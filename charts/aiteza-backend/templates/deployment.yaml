@@ -13,6 +13,7 @@ spec:
       maxSurge: 1
   minReadySeconds: 15
   progressDeadlineSeconds: 600
+  revisionHistoryLimit: 5
   selector:
     matchLabels:
       {{- include "aiteza-backend.selectorLabels" . | nindent 6 }}
@@ -31,6 +32,15 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "aiteza-backend.serviceAccountName" . }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds | default 30 }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "aiteza-backend.fullname" . }}
       containers:
         - name: aiteza-backend
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -101,6 +111,10 @@ spec:
             - secretRef:
                 name: {{ . }}
           {{- end }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           {{- with .Values.livenessProbe }}
           livenessProbe:
             httpGet:
@@ -131,12 +145,12 @@ spec:
             periodSeconds: {{ .periodSeconds }}
             timeoutSeconds: {{ .timeoutSeconds }}
           {{- end }}
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sh","-c","sleep 5"]
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      volumes:
-        - name: config
-          configMap:
-            name: {{ include "aiteza-backend.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

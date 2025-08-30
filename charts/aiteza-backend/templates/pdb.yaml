@@ -1,0 +1,14 @@
+{{- if .Values.podDisruptionBudget.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "aiteza-backend.fullname" . }}
+  labels:
+    {{- include "aiteza-backend.labels" . | nindent 4 }}
+spec:
+  minAvailable: {{ .Values.podDisruptionBudget.minAvailable | default "50%" }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "aiteza-backend.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
