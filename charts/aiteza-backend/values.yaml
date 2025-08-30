@@ -136,10 +136,9 @@ livenessProbe:
 podSecurityContext: {}
 securityContext:
   runAsNonRoot: true
-  allowPrivilegeEscalation: false
-  readOnlyRootFilesystem: true
   runAsUser: 1000
   runAsGroup: 1000
+  allowPrivilegeEscalation: false
   seccompProfile:
     type: RuntimeDefault
 
