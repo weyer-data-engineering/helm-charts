@@ -1,42 +1,68 @@
 image:
   repository: ghcr.io/weyer-data-engineering/aiteza-backend
-  tag: "latest"
+  tag: ""
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
 nameOverride: ""
 fullNameOverride: aiteza-backend
 
+javaOptions: ""
+
 aiteza:
+  frontendOrigin: ""
+  chatNameModel: ""
+  repromptModel: ""
+  models: {}
   database:
+    connectionPool:
+      minIdle: 5
+      max: 90
+      idleTimeout: 5000
     postgres:
+      host: ""
+      port: 5432
+      database: aiteza
+      schema: public
       secretRef:
         name: ""
         keys:
-          postgresUser: ""
-          postgresPassword: ""
+          postgresUser: "postgresUser"
+          postgresPassword: "postgresPassword"
   keycloak:
+    authServerUrl: ""
+    realm: ""
+    clientId: ""
     secretRef:
       name: ""
       keys:
-        adminUsername: ""
-        adminPassword: ""
+        adminUsername: "adminUsername"
+        adminPassword: "adminPassword"
   etl:
     tika:
       endpoint: ""
     docling:
       enabled: true
+      baseUrl: ""
     firecrawl:
+      endpoint: "https://api.firecrawl.dev"
+      maxSubpages: 200
+      maxDepth: 3
       secretRef:
         name: ""
         keys:
-          apiKey: ""
-  models: {}
+          apiKey: "apiKey"
 
 s3:
-  enabled: true
+  enabled: false
+  endpoint: ""
+  region: ""
+  bucketName: ""
   secretRef:
-    keys: {}
+    name: ""
+    keys:
+      accessKey: "accessKey"
+      secretKey: "secretKey"
 
 spring:
   security:
@@ -44,6 +70,7 @@ spring:
       resourceserver:
         jwt:
           issuerUri: ""
+          audiences: "account"
   ai:
     openai:
       baseUrl: ""
@@ -61,26 +88,31 @@ environmentSecrets: []
 service:
   annotations: {}
   type: ClusterIP
-  ClusterIP:
+  clusterIP:
   httpPort: 80
+  sessionAffinity: None
 
 ingress:
   enabled: true
+  ingressClassName: ""
   annotations: {}
-  hosts:
-  tls: []
+  host: ""
+  tls:
+    secretName: ""
 
 serviceAccount:
   create: false
 
-replicaCount: 1
+replicaCount: 2
+
 resources:
   requests:
-    memory: 512Mi
-    cpu: 500m
-  limits:
-    memory: 1024Mi
+    memory: 2Gi
     cpu: 1
+  limits:
+    memory: 4Gi
+    cpu: 2
+
 podAnnotations: {}
 
 startupProbe:
@@ -97,18 +129,33 @@ readinessProbe:
 
 livenessProbe:
   failureThreshold: 1
-  initialDelaySeconds: 1
+  initialDelaySeconds: 30
   timeoutSeconds: 3
-  periodSeconds: 60
+  periodSeconds: 30
 
-# -- Node selector for pod scheduling
+podSecurityContext: {}
+securityContext:
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  seccompProfile:
+    type: RuntimeDefault
+
+terminationGracePeriodSeconds: 30
+
 nodeSelector: {}
-
-# -- Tolerations for pod scheduling
 tolerations: []
-
-# -- Affinity rules for pod scheduling
 affinity: {}
-
-# -- Control how Pods are spread across the cluster
 topologySpreadConstraints: []
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 60
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: "50%"

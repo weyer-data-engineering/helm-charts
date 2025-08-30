@@ -25,7 +25,7 @@ data:
               temperature: 0.2
 
     server:
-      port: 80
+      port: {{ .Values.service.httpPort | default 80 }}
 
     springdoc:
       swagger-ui:
@@ -54,16 +54,16 @@ data:
         websource-cleaner: "0 0/5 * * * *"
       database:
         connection-pool:
-          min-idle: 5
-          max: 90
-          idle-timeout: 5000
+          min-idle: {{ .Values.aiteza.database.connectionPool.minIdle | default 5 }}
+          max: {{ .Values.aiteza.database.connectionPool.max | default 90 }}
+          idle-timeout: {{ .Values.aiteza.database.connectionPool.idleTimeout | default 5000 }}
         postgres:
           host: {{ required "aiteza.database.postgres.host is required!" .Values.aiteza.database.postgres.host | quote }}
-          port: 5432
+          port: {{ .Values.aiteza.database.postgres.port | default 5432 }}
           login: ${POSTGRES_USER}
           password: ${POSTGRES_PASSWORD}
           database: {{ .Values.aiteza.database.postgres.database | default "aiteza" | quote }}
-          schema: public
+          schema: {{ .Values.aiteza.database.postgres.schema | default "public" | quote }}
       keycloak:
         authServerUrl: {{ required "aiteza.keycloak.authServerUrl is required!" .Values.aiteza.keycloak.authServerUrl | quote }}
         realm: {{ required "aiteza.keycloak.realm is required!" .Values.aiteza.keycloak.realm | quote }}
@@ -87,9 +87,9 @@ data:
           table-mode: accurate
 {{- end }}
         firecrawl:
-          max-subpages: 200
-          max-depth: 3
-          endpoint: "https://api.firecrawl.dev"
+          max-subpages: {{ .Values.aiteza.etl.firecrawl.maxSubpages | default 200 }}
+          max-depth: {{ .Values.aiteza.etl.firecrawl.maxDepth | default 3 }}
+          endpoint: {{ .Values.aiteza.etl.firecrawl.endpoint | default "https://api.firecrawl.dev" | quote }}
           api-key: ${FIRECRAWL_API_KEY}
       chatNameModel: {{ required "aiteza.chatNameModel is required!" .Values.aiteza.chatNameModel | quote }}
       repromptModel: {{ required "aiteza.repromptModel is required!" .Values.aiteza.repromptModel | quote }}
