@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "aiteza-frontend.labels" . | nindent 4 }}
 spec:
-  minAvailable: {{ .Values.podDisruptionBudget.minAvailable }}
+  minAvailable: {{ .Values.podDisruptionBudget.minAvailable | default "50%" }}
   selector:
     matchLabels:
       {{- include "aiteza-frontend.selectorLabels" . | nindent 6 }}
