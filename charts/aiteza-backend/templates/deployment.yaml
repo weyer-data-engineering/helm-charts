@@ -92,6 +92,13 @@ spec:
                 secretKeyRef:
                   name: {{ required "aiteza.etl.firecrawl.secretRef.name is required!" .Values.aiteza.etl.firecrawl.secretRef.name }}
                   key: {{ .Values.aiteza.etl.firecrawl.secretRef.keys.apiKey | default "apiKey" }}
+            {{- if .Values.aiteza.search.reranking.enabled }}
+            - name: RERANKING_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "aiteza.search.reranking.secretRef.name is required!" .Values.aiteza.search.reranking.secretRef.name }}
+                  key: {{ .Values.aiteza.search.reranking.secretRef.keys.apiKey | default "apiKey" }}
+            {{- end }}
             {{- if .Values.s3.enabled }}
             - name: S3_ACCESS_KEY
               valueFrom:

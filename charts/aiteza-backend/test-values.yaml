@@ -28,6 +28,14 @@ aiteza:
       baseUrl: http://docling.local
     tika:
       endpoint: http://tika.local
+  search:
+    reranking:
+      enabled: false
+      endpoint: "https://api.cohere.com/v2/rerank"
+      model: "rerank-v3.5"
+      secretRef:
+        name: aiteza-search-reranking-secret
+    fullTextWeight: 0.7
 
 s3:
   enabled: true
