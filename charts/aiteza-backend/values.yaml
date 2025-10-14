@@ -13,6 +13,16 @@ aiteza:
   frontendOrigin: ""
   chatNameModel: ""
   repromptModel: ""
+  search:
+    reranking:
+      enabled: false
+      endpoint: ""
+      model: ""
+      secretRef:
+        name: ""
+        keys:
+          apiKey: "apiKey"
+    fullTextWeight: 0.7
   models: {}
   database:
     connectionPool:

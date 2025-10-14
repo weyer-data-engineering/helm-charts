@@ -91,6 +91,15 @@ data:
           max-depth: {{ .Values.aiteza.etl.firecrawl.maxDepth | default 3 }}
           endpoint: {{ .Values.aiteza.etl.firecrawl.endpoint | default "https://api.firecrawl.dev" | quote }}
           api-key: ${FIRECRAWL_API_KEY}
+      search:
+        reranking:
+          enabled: {{ .Values.aiteza.search.reranking.enabled | default false }}
+{{- if .Values.aiteza.search.reranking.enabled }}
+          endpoint: {{ .Values.aiteza.search.reranking.endpoint | quote }}
+          model: {{ .Values.aiteza.search.reranking.model | quote }}
+          api-key: ${RERANKING_API_KEY}
+{{- end }}
+        full-text-weight: {{ required "aiteza.search.fullTextWeight is required!" .Values.aiteza.search.fullTextWeight }}
       chatNameModel: {{ required "aiteza.chatNameModel is required!" .Values.aiteza.chatNameModel | quote }}
       repromptModel: {{ required "aiteza.repromptModel is required!" .Values.aiteza.repromptModel | quote }}
       models:
