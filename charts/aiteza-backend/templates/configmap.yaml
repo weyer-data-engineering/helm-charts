@@ -98,8 +98,8 @@ data:
           endpoint: {{ .Values.aiteza.search.reranking.endpoint | quote }}
           model: {{ .Values.aiteza.search.reranking.model | quote }}
           api-key: ${RERANKING_API_KEY}
-        full-text-weight: {{ required "aiteza.search.fullTextWeight is required!" .Values.aiteza.search.fullTextWeight }}
 {{- end }}
+        full-text-weight: {{ required "aiteza.search.fullTextWeight is required!" .Values.aiteza.search.fullTextWeight }}
       chatNameModel: {{ required "aiteza.chatNameModel is required!" .Values.aiteza.chatNameModel | quote }}
       repromptModel: {{ required "aiteza.repromptModel is required!" .Values.aiteza.repromptModel | quote }}
       models:
