@@ -1,5 +1,5 @@
 image:
-  repository: weyerdataengineering.azurecr.io/aiteza-frontend
+  repository: weyerdataengineering.azurecr.io/aiteza-frontend-new
   tag: ""
   pullPolicy: Always
 
@@ -43,27 +43,6 @@ resources:
     cpu: 500m
 
 podAnnotations: {}
-
-startupProbe:
-  path: /
-  failureThreshold: 30
-  initialDelaySeconds: 5
-  timeoutSeconds: 2
-  periodSeconds: 5
-
-readinessProbe:
-  path: /
-  failureThreshold: 3
-  initialDelaySeconds: 3
-  timeoutSeconds: 2
-  periodSeconds: 5
-
-livenessProbe:
-  path: /
-  failureThreshold: 3
-  initialDelaySeconds: 10
-  timeoutSeconds: 2
-  periodSeconds: 10
 
 podSecurityContext: {}
 securityContext:
