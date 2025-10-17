@@ -126,6 +126,9 @@ spec:
             httpGet:
               path: /actuator/health/deps
               port: http
+              periodSeconds: 60
+              timeoutSeconds: 10
+              failureThreshold: 2
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
@@ -135,7 +138,7 @@ spec:
               path: /actuator/health/readiness
               port: http
             failureThreshold: 30
-            periodSeconds: 10
+            periodSeconds: 5
           lifecycle:
             preStop:
               exec:
