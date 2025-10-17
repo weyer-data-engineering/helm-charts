@@ -122,36 +122,20 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.livenessProbe }}
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/deps
               port: http
-            failureThreshold: {{ .failureThreshold }}
-            initialDelaySeconds: {{ .initialDelaySeconds }}
-            periodSeconds: {{ .periodSeconds }}
-            timeoutSeconds: {{ .timeoutSeconds }}
-          {{- end }}
-          {{- with .Values.readinessProbe }}
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/readiness
               port: http
-            failureThreshold: {{ .failureThreshold }}
-            initialDelaySeconds: {{ .initialDelaySeconds }}
-            periodSeconds: {{ .periodSeconds }}
-            timeoutSeconds: {{ .timeoutSeconds }}
-          {{- end }}
-          {{- with .Values.startupProbe }}
           startupProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/readiness
               port: http
-            failureThreshold: {{ .failureThreshold }}
-            initialDelaySeconds: {{ .initialDelaySeconds }}
-            periodSeconds: {{ .periodSeconds }}
-            timeoutSeconds: {{ .timeoutSeconds }}
-          {{- end }}
+            failureThreshold: 30
+            periodSeconds: 10
           lifecycle:
             preStop:
               exec:

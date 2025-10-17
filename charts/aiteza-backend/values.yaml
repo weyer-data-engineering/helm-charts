@@ -125,24 +125,6 @@ resources:
 
 podAnnotations: {}
 
-startupProbe:
-  failureThreshold: 10
-  initialDelaySeconds: 60
-  timeoutSeconds: 3
-  periodSeconds: 5
-
-readinessProbe:
-  failureThreshold: 3
-  initialDelaySeconds: 1
-  timeoutSeconds: 3
-  periodSeconds: 5
-
-livenessProbe:
-  failureThreshold: 1
-  initialDelaySeconds: 30
-  timeoutSeconds: 3
-  periodSeconds: 30
-
 podSecurityContext: {}
 securityContext:
   runAsNonRoot: true

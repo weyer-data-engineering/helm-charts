@@ -61,36 +61,18 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.livenessProbe }}
           livenessProbe:
             httpGet:
-              path: {{ .path }}
+              path: /
               port: http
-            failureThreshold: {{ .failureThreshold }}
-            initialDelaySeconds: {{ .initialDelaySeconds }}
-            periodSeconds: {{ .periodSeconds }}
-            timeoutSeconds: {{ .timeoutSeconds }}
-          {{- end }}
-          {{- with .Values.readinessProbe }}
           readinessProbe:
             httpGet:
-              path: {{ .path }}
+              path: /
               port: http
-            failureThreshold: {{ .failureThreshold }}
-            initialDelaySeconds: {{ .initialDelaySeconds }}
-            periodSeconds: {{ .periodSeconds }}
-            timeoutSeconds: {{ .timeoutSeconds }}
-          {{- end }}
-          {{- with .Values.startupProbe }}
           startupProbe:
             httpGet:
-              path: {{ .path }}
+              path: /
               port: http
-            failureThreshold: {{ .failureThreshold }}
-            initialDelaySeconds: {{ .initialDelaySeconds }}
-            periodSeconds: {{ .periodSeconds }}
-            timeoutSeconds: {{ .timeoutSeconds }}
-          {{- end}}
           lifecycle:
             preStop:
               exec:
