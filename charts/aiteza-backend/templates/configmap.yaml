@@ -118,7 +118,7 @@ data:
       repromptModel: {{ required "aiteza.repromptModel is required!" .Values.aiteza.repromptModel | quote }}
       models:
         health:
-          timeoutSeconds: 4
+          timeoutSeconds: 8
 {{- $models := required "aiteza.models is required!" .Values.aiteza.models }}
 {{- range $modelName, $model := $models }}
         {{ $modelName }}:
