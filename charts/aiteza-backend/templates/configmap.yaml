@@ -27,6 +27,20 @@ data:
     server:
       port: {{ .Values.service.httpPort | default 80 }}
 
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: info, health, prometheus
+      endpoint:
+        health:
+          show-details: always
+          probes:
+            enabled: true
+          group:
+            deps:
+              include: auth, s3, firecrawl, docling, reranking, embedding, llm, tika
+
     springdoc:
       swagger-ui:
         oauth:
@@ -103,6 +117,8 @@ data:
       chatNameModel: {{ required "aiteza.chatNameModel is required!" .Values.aiteza.chatNameModel | quote }}
       repromptModel: {{ required "aiteza.repromptModel is required!" .Values.aiteza.repromptModel | quote }}
       models:
+        health:
+          timeoutSeconds: 4
 {{- $models := required "aiteza.models is required!" .Values.aiteza.models }}
 {{- range $modelName, $model := $models }}
         {{ $modelName }}:
