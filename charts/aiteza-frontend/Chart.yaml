@@ -3,4 +3,4 @@ name: aiteza-frontend
 description: A Helm chart for AITEZA Frontend
 type: application
 version: 1.4.0
-appVersion: 1.4.0
+appVersion: main
