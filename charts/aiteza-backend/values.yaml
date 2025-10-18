@@ -1,7 +1,7 @@
 image:
   repository: weyerdataengineering.azurecr.io/aiteza-backend
   tag: ""
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 imagePullSecrets: []
 nameOverride: ""
