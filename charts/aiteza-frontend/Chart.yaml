@@ -2,5 +2,5 @@ apiVersion: v2
 name: aiteza-frontend
 description: A Helm chart for AITEZA Frontend
 type: application
-version: 1.4.0
+version: 1.5.0-pre-release
 appVersion: main
