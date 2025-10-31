@@ -127,6 +127,7 @@ data:
           description: {{ $model.description | quote }}
           default-model: {{ $model.defaultModel | default false }}
           enabled: {{ $model.enabled | default false }}
+          selectable: {{ if hasKey $model "selectable" }}{{ $model.selectable }}{{ else }}true{{ end }}
           multi-modal: {{ $model.multiModal | default false }}
           icon: {{ $model.icon | quote }}
           type: {{ $model.type | quote }}
