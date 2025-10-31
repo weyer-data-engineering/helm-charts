@@ -40,7 +40,7 @@ aiteza:
       defaultModel: true
       enabled: true
       multiModal: false
-      icon: "🤖"
+      icon: "openai.svg"
       type: "chat"
       endpoint: "https://api.openai.com"
       chunks: 20
@@ -52,7 +52,7 @@ aiteza:
       enabled: true
       selectable: false
       multiModal: false
-      icon: "🚀"
+      icon: "openai.svg"
       type: "chat"
       endpoint: "https://api.openai.com"
       chunks: 15
