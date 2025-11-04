@@ -32,6 +32,30 @@ aiteza:
       secretRef:
         name: aiteza-search-reranking-secret
     fullTextWeight: 0.7
+  models:
+    model1:
+      model: "gpt-4"
+      name: "GPT-4"
+      description: "OpenAI GPT-4 model"
+      defaultModel: true
+      enabled: true
+      multiModal: false
+      icon: "openai.svg"
+      type: "chat"
+      endpoint: "https://api.openai.com"
+      chunks: 20
+    model2:
+      model: "gpt-3.5-turbo"
+      name: "GPT-3.5 Turbo"
+      description: "OpenAI GPT-3.5 Turbo model"
+      defaultModel: false
+      enabled: true
+      selectable: false
+      multiModal: false
+      icon: "openai.svg"
+      type: "chat"
+      endpoint: "https://api.openai.com"
+      chunks: 15
 
 s3:
   enabled: true
