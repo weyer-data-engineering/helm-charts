@@ -3,11 +3,7 @@ imagePullSecrets:
 
 aiteza:
   audit:
-    enabled: true  # Set to true to enable audit logging
-    loki-url: http://localhost:3100  # Loki server URL
-    job-label: aiteza-audit  # Job label for logs
-    connection-timeout: 5000  # Connection timeout in milliseconds
-    read-timeout: 5000  # Read timeout in milliseconds
+    lokiUrl: http://localhost:3100
     secretRef:
       name: "aiteza-loki-secret"
   litellm:
@@ -30,35 +26,8 @@ aiteza:
     firecrawl:
       secretRef:
         name: aiteza-etl-firecrawl-secret
-      search:
-        num-results: "5"
-        timeout-in-seconds: "5000"
     docling:
-      enabled: true
       baseUrl: http://docling.local
-      convert-endpoint: "/v1/convert/file"
-      convert-async-endpoint: "/v1/convert/source/async"
-      result-endpoint: "/v1/result"
-      status-endpoint: "/v1/status/poll"
-      do-ocr: "true"
-      ocr-engine: "easyocr"
-      pdf-backend: "dlparse_v4"
-      table-mode: "accurate"
-      from-formats:
-        - docx
-        - pptx
-        - html
-        - image
-        - pdf
-        - md
-        - csv
-        - xlsx
-        - audio
-      vlm-pipeline-options:
-        concurrency: "4"
-        timeout: "240"
-        scale: "2.0"
-        temperature: "0.4"
     tika:
       endpoint: http://tika.local
   search:
@@ -68,7 +37,6 @@ aiteza:
       model: "rerank-v3.5"
       secretRef:
         name: aiteza-search-reranking-secret
-    fullTextWeight: 0.7
   models:
     model1:
       model: "gpt-4"
