@@ -55,6 +55,15 @@ spec:
             - name: KEYCLOAK_CLIENT_ID
               value: {{ required "aiteza.keycloak.clientId is required!" .clientId | quote }}
             {{- end }}
+            {{- with .Values.aiteza.strapi }}
+            - name: STRAPI_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .secretRef.name }}
+                  key: {{ .secretRef.keys.token }}
+            - name: STRAPI_URL
+              value: {{ required "aiteza.strapi.url is required!" .url | quote }}
+            {{- end }}
             - name: TZ
               value: {{ .Values.timeZone | default "Europe/Berlin" | quote }}
           {{- with .Values.securityContext }}

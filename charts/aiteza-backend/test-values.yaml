@@ -2,6 +2,8 @@ imagePullSecrets:
   - name: docker-aiteza
 
 aiteza:
+  litellm:
+    url: "https://litellm.local"
   chatNameModel: model1
   repromptModel: model1
   frontendOrigin: http://frontend.local
@@ -20,8 +22,35 @@ aiteza:
     firecrawl:
       secretRef:
         name: aiteza-etl-firecrawl-secret
+        search:
+          num-results: "5"
+          timeout-in-seconds: "5000"
     docling:
+      enabled: true
       baseUrl: http://docling.local
+      convert-endpoint: "/v1/convert/file"
+      convert-async-endpoint: "/v1/convert/source/async"
+      result-endpoint: "/v1/result"
+      status-endpoint: "/v1/status/poll"
+      do-ocr: "true"
+      ocr-engine: "easyocr"
+      pdf-backend: "dlparse_v4"
+      table-mode: "accurate"
+      from-formats:
+        - docx
+        - pptx
+        - html
+        - image
+        - pdf
+        - md
+        - csv
+        - xlsx
+        - audio
+      vlm-pipeline-options:
+        concurrency: "4"
+        timeout: "240"
+        scale: "2.0"
+        temperature: "0.4"
     tika:
       endpoint: http://tika.local
   search:

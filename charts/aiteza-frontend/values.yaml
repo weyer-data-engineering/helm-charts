@@ -13,6 +13,12 @@ aiteza:
     url: ""
     realm: ""
     clientId: ""
+  strapi:
+    url: ""
+    secretRef:
+      name: ""
+      keys:
+        token: "token"
 
 service:
   annotations: {}

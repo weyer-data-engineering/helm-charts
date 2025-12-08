@@ -10,6 +10,8 @@ fullNameOverride: aiteza-backend
 javaOptions: ""
 
 aiteza:
+  litellm:
+    url: ""
   frontendOrigin: ""
   chatNameModel: ""
   repromptModel: ""
@@ -54,6 +56,20 @@ aiteza:
     docling:
       enabled: true
       baseUrl: ""
+      convert-endpoint: ""
+      convert-async-endpoint: ""
+      result-endpoint: ""
+      status-endpoint: ""
+      do-ocr: ""
+      ocr-engine: ""
+      pdf-backend: ""
+      table-mode: ""
+      from-formats: {}
+      vlm-pipeline-options:
+        concurrency: ""
+        timeout: ""
+        scale: ""
+        temperature: ""
     firecrawl:
       endpoint: "https://api.firecrawl.dev"
       maxSubpages: 200
@@ -62,6 +78,9 @@ aiteza:
         name: ""
         keys:
           apiKey: "apiKey"
+      search:
+        num-results: ""
+        timeout-in-seconds: ""
 
 s3:
   enabled: false
