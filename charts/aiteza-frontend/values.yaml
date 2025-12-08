@@ -7,12 +7,20 @@ imagePullSecrets: []
 nameOverride: ""
 fullNameOverride: aiteza-frontend
 
+timezone: "Europe/Berlin"
+
 aiteza:
   backendUrl: ""
   keycloak:
     url: ""
     realm: ""
     clientId: ""
+  strapi:
+    url: ""
+    secretRef:
+      name: ""
+      keys:
+        token: "token"
 
 service:
   annotations: {}

@@ -7,6 +7,10 @@ aiteza:
     url: http://auth.local
     realm: local
     clientId: test
+  strapi:
+    url: http://strapi.local
+    secretRef:
+      name: aiteza-strapi-secret
 
 ingress:
   enabled: true

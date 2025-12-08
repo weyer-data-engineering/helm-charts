@@ -77,6 +77,18 @@ spec:
                 secretKeyRef:
                   name: {{ required "aiteza.database.postgres.secretRef.name is required!" .Values.aiteza.database.postgres.secretRef.name }}
                   key: {{ .Values.aiteza.database.postgres.secretRef.keys.postgresPassword | default "postgresPassword" }}
+            {{- if .Values.aiteza.audit.secretRef.name }}
+            - name: LOKI_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "aiteza.audit.secretRef.name is required!" .Values.aiteza.audit.secretRef.name }}
+                  key: {{ .Values.aiteza.audit.secretRef.keys.username | default "username" }}
+            - name: LOKI_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "aiteza.audit.secretRef.name is required!" .Values.aiteza.audit.secretRef.name }}
+                  key: {{ .Values.aiteza.audit.secretRef.keys.password | default "password" }}
+            {{- end }}
             - name: KEYCLOAK_ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -112,7 +124,7 @@ spec:
                   key: {{ .Values.s3.secretRef.keys.secretKey | default "secretKey" }}
             {{- end }}
             - name: TZ
-              value: {{ .Values.timeZone | default "Europe/Berlin" | quote }}
+              value: {{ .Values.timezone | default "Europe/Berlin" | quote }}
           envFrom:
           {{- range .Values.environmentSecrets }}
             - secretRef:

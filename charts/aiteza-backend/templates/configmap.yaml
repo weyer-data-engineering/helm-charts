@@ -57,6 +57,20 @@ data:
 {{- end }}
 
     aiteza:
+      audit:
+        enabled: {{ .Values.aiteza.audit.enabled | default true }}
+{{- if .Values.aiteza.audit.enabled }}
+        loki-url: {{ required "aiteza.audit.lokiUrl is required!" .Values.aiteza.audit.lokiUrl | quote }}
+        job-label: {{ .Values.aiteza.audit.jobLabel | default "aiteza-audit" | quote }}
+        connection-timeout: {{ .Values.aiteza.audit.connectionTimeout | default 5000 }}
+        read-timeout: {{ .Values.aiteza.audit.readTimeout | default 5000 }}
+{{- if .Values.aiteza.audit.secretRef.name }}
+        username: ${LOKI_USERNAME}
+        password: ${LOKI_PASSWORD}
+{{- end }}
+{{- end }}
+      litellm:
+        url: {{ required "aiteza.litellm.url is required!" .Values.aiteza.litellm.url | quote }}
       security:
         public-paths:
           - "/v3/api-docs/**"
@@ -91,14 +105,20 @@ data:
           enabled: {{ .Values.aiteza.etl.docling.enabled | default true }}
 {{- if .Values.aiteza.etl.docling.enabled }}
           base-url: {{ required "aiteza.etl.docling.baseUrl is required!" .Values.aiteza.etl.docling.baseUrl | quote }}
-          convert-endpoint: "/v1/convert/file"
-          convert-async-endpoint: "/v1/convert/source/async"
-          result-endpoint: "/v1/result"
-          status-endpoint: "/v1/status/poll"
-          do-ocr: true
-          ocr-engine: easyocr
-          pdf-backend: dlparse_v4
-          table-mode: accurate
+          convert-endpoint: {{ .Values.aiteza.etl.docling.convertEndpoint | default "/v1/convert/file" | quote }}
+          convert-async-endpoint: {{ .Values.aiteza.etl.docling.convertAsyncEndpoint | default "/v1/convert/source/async" | quote }}
+          result-endpoint: {{ .Values.aiteza.etl.docling.resultEndpoint | default "/v1/result" | quote }}
+          status-endpoint: {{ .Values.aiteza.etl.docling.statusEndpoint | default "/v1/status/poll" | quote }}
+          do-ocr: {{ .Values.aiteza.etl.docling.doOcr | default true }}
+          ocr-engine: {{ .Values.aiteza.etl.docling.ocrEngine | default "easyocr" | quote }}
+          pdf-backend: {{ .Values.aiteza.etl.docling.pdfBackend | default "dlparse_v4" | quote }}
+          table-mode: {{ .Values.aiteza.etl.docling.tableMode | default "accurate" | quote }}
+          from-formats: {{ .Values.aiteza.etl.docling.fromFormats | default (list "docx" "pptx" "html" "image" "pdf" "md" "csv" "xlsx" "audio") | toJson }}
+          vlm-pipeline-options:
+            concurrency: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.concurrency | default 4 }}
+            timeout: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.timeout | default 240 }}
+            scale: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.scale | default "2.0" | quote }}
+            temperature: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.temperature | default "0.4" | quote }}
 {{- end }}
         firecrawl:
           max-subpages: {{ .Values.aiteza.etl.firecrawl.maxSubpages | default 200 }}
@@ -106,7 +126,7 @@ data:
           endpoint: {{ .Values.aiteza.etl.firecrawl.endpoint | default "https://api.firecrawl.dev" | quote }}
           api-key: ${FIRECRAWL_API_KEY}
           search:
-            num-results: {{ .Values.aiteza.etl.firecrawl.search.numResults | default 3 }}
+            num-results: {{ .Values.aiteza.etl.firecrawl.search.numResults | default 5 }}
             timeout-in-seconds: {{ .Values.aiteza.etl.firecrawl.search.timeoutInSeconds | default 90 }}
       search:
         reranking:

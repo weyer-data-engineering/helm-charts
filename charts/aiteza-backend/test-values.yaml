@@ -2,6 +2,12 @@ imagePullSecrets:
   - name: docker-aiteza
 
 aiteza:
+  audit:
+    lokiUrl: http://localhost:3100
+    secretRef:
+      name: "aiteza-loki-secret"
+  litellm:
+    url: "https://litellm.local"
   chatNameModel: model1
   repromptModel: model1
   frontendOrigin: http://frontend.local
@@ -31,7 +37,6 @@ aiteza:
       model: "rerank-v3.5"
       secretRef:
         name: aiteza-search-reranking-secret
-    fullTextWeight: 0.7
   models:
     model1:
       model: "gpt-4"

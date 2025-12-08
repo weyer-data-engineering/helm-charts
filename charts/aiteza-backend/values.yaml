@@ -8,8 +8,22 @@ nameOverride: ""
 fullNameOverride: aiteza-backend
 
 javaOptions: ""
+timezone: "Europe/Berlin"
 
 aiteza:
+  audit:
+    enabled: true
+    lokiUrl: ""
+    jobLabel: aiteza-audit
+    connectionTimeout: 5000
+    readTimeout: 5000
+    secretRef:
+      name: ""
+      keys:
+        username: "username"
+        password: "password"
+  litellm:
+    url: ""
   frontendOrigin: ""
   chatNameModel: ""
   repromptModel: ""
@@ -54,6 +68,29 @@ aiteza:
     docling:
       enabled: true
       baseUrl: ""
+      convertEndpoint: "/v1/convert/file"
+      convertAsyncEndpoint: "/v1/convert/source/async"
+      resultEndpoint: "/v1/result"
+      statusEndpoint: "/v1/status/poll"
+      doOcr: true
+      ocrEngine: "easyocr"
+      pdfBackend: "dlparse_v4"
+      tableMode: "accurate"
+      fromFormats:
+        - docx
+        - pptx
+        - html
+        - image
+        - pdf
+        - md
+        - csv
+        - xlsx
+        - audio
+      vlmPipelineOptions:
+        concurrency: 4
+        timeout: 240
+        scale: "2.0"
+        temperature: "0.4"
     firecrawl:
       endpoint: "https://api.firecrawl.dev"
       maxSubpages: 200
@@ -62,6 +99,9 @@ aiteza:
         name: ""
         keys:
           apiKey: "apiKey"
+      search:
+        numResults: 5
+        timeoutInSeconds: 90
 
 s3:
   enabled: false
