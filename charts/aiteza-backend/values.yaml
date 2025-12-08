@@ -72,7 +72,7 @@ aiteza:
       convertAsyncEndpoint: "/v1/convert/source/async"
       resultEndpoint: "/v1/result"
       statusEndpoint: "/v1/status/poll"
-      doOcr: "true"
+      doOcr: true
       ocrEngine: "easyocr"
       pdfBackend: "dlparse_v4"
       tableMode: "accurate"
@@ -101,7 +101,7 @@ aiteza:
           apiKey: "apiKey"
       search:
         numResults: 5
-        timeoutInSeconds: 5000
+        timeoutInSeconds: 90
 
 s3:
   enabled: false

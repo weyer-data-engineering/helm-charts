@@ -65,7 +65,7 @@ spec:
               value: {{ required "aiteza.strapi.url is required!" .url | quote }}
             {{- end }}
             - name: TZ
-              value: {{ .Values.timeZone | default "Europe/Berlin" | quote }}
+              value: {{ .Values.timezone | default "Europe/Berlin" | quote }}
           {{- with .Values.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}

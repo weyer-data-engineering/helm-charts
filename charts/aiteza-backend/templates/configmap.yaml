@@ -115,8 +115,8 @@ data:
           table-mode: {{ .Values.aiteza.etl.docling.tableMode | default "accurate" | quote }}
           from-formats: {{ .Values.aiteza.etl.docling.fromFormats | default (list "docx" "pptx" "html" "image" "pdf" "md" "csv" "xlsx" "audio") | toJson }}
           vlm-pipeline-options:
-            concurrency: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.concurrency | default 4 | quote }}
-            timeout: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.timeout | default 240 | quote }}
+            concurrency: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.concurrency | default 4 }}
+            timeout: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.timeout | default 240 }}
             scale: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.scale | default "2.0" | quote }}
             temperature: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.temperature | default "0.4" | quote }}
 {{- end }}
@@ -127,7 +127,7 @@ data:
           api-key: ${FIRECRAWL_API_KEY}
           search:
             num-results: {{ .Values.aiteza.etl.firecrawl.search.numResults | default 5 }}
-            timeout-in-seconds: {{ .Values.aiteza.etl.firecrawl.search.timeoutInSeconds | default 5000 }}
+            timeout-in-seconds: {{ .Values.aiteza.etl.firecrawl.search.timeoutInSeconds | default 90 }}
       search:
         reranking:
           enabled: {{ .Values.aiteza.search.reranking.enabled | default false }}
