@@ -10,6 +10,17 @@ fullNameOverride: aiteza-backend
 javaOptions: ""
 
 aiteza:
+  audit:
+    enabled: false
+    loki-url: ""
+    job-label: ""
+    connection-timeout: ""
+    read-timeout: ""
+    secretRef:
+      name: ""
+      keys:
+        username: "User"
+        password: "Password"
   litellm:
     url: ""
   frontendOrigin: ""

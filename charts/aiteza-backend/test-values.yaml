@@ -2,6 +2,14 @@ imagePullSecrets:
   - name: docker-aiteza
 
 aiteza:
+  audit:
+    enabled: true  # Set to true to enable audit logging
+    loki-url: http://localhost:3100  # Loki server URL
+    job-label: aiteza-audit  # Job label for logs
+    connection-timeout: 5000  # Connection timeout in milliseconds
+    read-timeout: 5000  # Read timeout in milliseconds
+    secretRef:
+      name: "aiteza-loki-secret"
   litellm:
     url: "https://litellm.local"
   chatNameModel: model1
