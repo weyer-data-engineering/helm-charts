@@ -22,9 +22,9 @@ aiteza:
     firecrawl:
       secretRef:
         name: aiteza-etl-firecrawl-secret
-        search:
-          num-results: "5"
-          timeout-in-seconds: "5000"
+      search:
+        num-results: "5"
+        timeout-in-seconds: "5000"
     docling:
       enabled: true
       baseUrl: http://docling.local
