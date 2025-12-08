@@ -59,8 +59,8 @@ spec:
             - name: STRAPI_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: {{ .secretRef.name }}
-                  key: {{ .secretRef.keys.token }}
+                  name: {{ required "aiteza.strapi.secretRef.name is required!" .secretRef.name | quote }}
+                  key: {{ .secretRef.keys.token | default "token" | quote }}
             - name: STRAPI_URL
               value: {{ required "aiteza.strapi.url is required!" .url | quote }}
             {{- end }}
