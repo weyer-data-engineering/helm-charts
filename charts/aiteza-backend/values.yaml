@@ -11,6 +11,10 @@ javaOptions: ""
 timezone: "Europe/Berlin"
 
 aiteza:
+  files:
+    chatFileExpirationDays: 7
+    cleanupSchedule: "0 0 2 * * *"
+    cleanupBatchSize: 10
   audit:
     enabled: true
     lokiUrl: ""
@@ -24,9 +28,18 @@ aiteza:
         password: "password"
   litellm:
     url: ""
-  frontendOrigin: ""
+  security:
+    publicPaths:
+      - "/v3/api-docs/**"
+      - "/doc/**"
+      - "/actuator/**"
+      - "/v1/**"
+      - "/api/**"
+    frontendOrigin: ""
+  hallucinationDetectionModel: ""
   chatNameModel: ""
   repromptModel: ""
+  imageDescriptionModel: ""
   search:
     reranking:
       enabled: false
@@ -37,7 +50,9 @@ aiteza:
         keys:
           apiKey: "apiKey"
     fullTextWeight: 0.7
-  models: {}
+  models:
+    health:
+      timeoutSeconds: 20
   database:
     connectionPool:
       minIdle: 5
@@ -56,12 +71,16 @@ aiteza:
   keycloak:
     authServerUrl: ""
     realm: ""
-    clientId: ""
+    frontendClientId: ""
+    backendClientId: ""
+    n8nClientId: ""
     secretRef:
       name: ""
       keys:
         adminUsername: "adminUsername"
         adminPassword: "adminPassword"
+        backendClientSecret: "backendClientSecret"
+        n8nClientSecret: "n8nClientSecret"
   etl:
     tika:
       endpoint: ""
@@ -72,10 +91,23 @@ aiteza:
       convertAsyncEndpoint: "/v1/convert/source/async"
       resultEndpoint: "/v1/result"
       statusEndpoint: "/v1/status/poll"
+      maxPollingAttempts: 2160
+      pollingIntervalInSeconds: 10
       doOcr: true
+      forceOcr: false
       ocrEngine: "easyocr"
       pdfBackend: "dlparse_v4"
       tableMode: "accurate"
+      imageExportMode: "placeholder"
+      abortOnError: false
+      returnAsFile: false
+      doTableStructure: true
+      includeImages: true
+      imagesScale: 2
+      doCodeEnrichment: false
+      doFormulaEnrichment: false
+      doPictureClassification: false
+      doPictureDescription: false
       fromFormats:
         - docx
         - pptx
@@ -87,6 +119,9 @@ aiteza:
         - xlsx
         - audio
       vlmPipelineOptions:
+        headers: {}
+        params: {}
+        responseFormat: "markdown"
         concurrency: 4
         timeout: 240
         scale: "2.0"
@@ -115,6 +150,12 @@ s3:
       secretKey: "secretKey"
 
 spring:
+  codec:
+    maxInMemorySize: "500KB"
+  servlet:
+    multipart:
+      maxFileSize: "400MB"
+      maxRequestSize: "400MB"
   security:
     oauth2:
       resourceserver:
@@ -124,9 +165,28 @@ spring:
   ai:
     openai:
       baseUrl: ""
+      embedding:
+        apiKey: "sk-your-embedding-api-key-here"
+        embeddingsPath: "/v1/embeddings"
+        options:
+          dimensions: 768
+          model: "nomic-embed-text:v1.5"
+          temperature: 0.2
+
+server:
+  compression:
+    enabled: true
+    mimeTypes: "text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json"
+  tomcat:
+    maxSwallowSize: "100MB"
 
 springdoc:
   swaggerUi:
+    path: /doc/swagger-ui.html
+    disableSwaggerDefaultUrl: true
+    operationsSorter: alpha
+    tagsSorter: alpha
+    tryItOutEnabled: true
     oauth:
       clientId: ""
 

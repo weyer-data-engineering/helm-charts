@@ -8,8 +8,13 @@ aiteza:
       name: "aiteza-loki-secret"
   litellm:
     url: "https://litellm.local"
+  files:
+    chatFileExpirationDays: 7
+    cleanupSchedule: "0 0 2 * * *"
+    cleanupBatchSize: 10
   chatNameModel: model1
   repromptModel: model1
+  imageDescriptionModel: model1
   frontendOrigin: http://frontend.local
   database:
     postgres:
@@ -19,15 +24,45 @@ aiteza:
   keycloak:
     authServerUrl: http://auth.local
     realm: local
-    clientId: test
+    frontendClientId: test-frontend
+    backendClientId: test-backend
+    n8nClientId: test-n8n
     secretRef:
       name: aiteza-keycloak-secret
+      keys:
+        backendClientSecret: backendClientSecret
+        n8nClientSecret: n8nClientSecret
   etl:
     firecrawl:
       secretRef:
         name: aiteza-etl-firecrawl-secret
     docling:
       baseUrl: http://docling.local
+      maxPollingAttempts: 2160
+      pollingIntervalInSeconds: 10
+      doOcr: true
+      forceOcr: false
+      ocrEngine: "easyocr"
+      pdfBackend: "dlparse_v4"
+      tableMode: "accurate"
+      imageExportMode: "placeholder"
+      abortOnError: false
+      returnAsFile: false
+      doTableStructure: true
+      includeImages: true
+      imagesScale: 2
+      doCodeEnrichment: false
+      doFormulaEnrichment: false
+      doPictureClassification: false
+      doPictureDescription: false
+      vlmPipelineOptions:
+        headers: {}
+        params: {}
+        responseFormat: "markdown"
+        concurrency: 4
+        timeout: 240
+        scale: "2.0"
+        temperature: "0.4"
     tika:
       endpoint: http://tika.local
   search:
@@ -72,6 +107,12 @@ s3:
     keys: {}
 
 spring:
+  codec:
+    maxInMemorySize: "500KB"
+  servlet:
+    multipart:
+      maxFileSize: "400MB"
+      maxRequestSize: "400MB"
   security:
     oauth2:
       resourceserver:
@@ -80,9 +121,25 @@ spring:
   ai:
     openai:
       baseUrl: http://openai.local
+      embedding:
+        apiKey: "sk-test"
+        options:
+           model: "nomic-embed-text:v1.5"
+
+server:
+  compression:
+    enabled: true
+    mimeTypes: "text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json"
+  tomcat:
+    maxSwallowSize: "100MB"
 
 springdoc:
   swaggerUi:
+    path: /doc/swagger-ui.html
+    disableSwaggerDefaultUrl: true
+    operationsSorter: alpha
+    tagsSorter: alpha
+    tryItOutEnabled: true
     oauth:
       clientId: test
 

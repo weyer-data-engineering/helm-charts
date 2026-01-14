@@ -20,12 +20,26 @@ data:
             enabled: false
           embedding:
             enabled: true
+            api-key: {{ required "spring.ai.openai.embedding.apiKey is required!" .Values.spring.ai.openai.embedding.apiKey | quote }}
+            embeddings-path: {{ .Values.spring.ai.openai.embedding.embeddingsPath | default "/v1/embeddings" | quote }}
             options:
-              model: "nomic-embed-text:v1.5"
-              temperature: 0.2
+              dimensions: {{ .Values.spring.ai.openai.embedding.options.dimensions | default 768 }}
+              model: {{ .Values.spring.ai.openai.embedding.options.model | default "nomic-embed-text:v1.5" | quote }}
+              temperature: {{ .Values.spring.ai.openai.embedding.options.temperature | default 0.2 }}
+      codec:
+        max-in-memory-size: {{ .Values.spring.codec.maxInMemorySize | default "500KB" | quote }}
+        servlet:
+          multipart:
+            max-file-size: {{ .Values.spring.servlet.multipart.maxFileSize | default "400MB" | quote }}
+            max-request-size: {{ .Values.spring.servlet.multipart.maxRequestSize | default "400MB" | quote }}
 
     server:
       port: {{ .Values.service.httpPort | default 80 }}
+      compression:
+        enabled: {{ .Values.server.compression.enabled | default true }}
+        mime-types: {{ .Values.server.compression.mimeTypes | default "text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json" | quote }}
+      tomcat:
+        max-swallow-size: {{ .Values.server.tomcat.maxSwallowSize | default "100MB" | quote }}
 
     management:
       endpoints:
@@ -43,6 +57,11 @@ data:
 
     springdoc:
       swagger-ui:
+        path: {{ .Values.springdoc.swaggerUi.path | default "/doc/swagger-ui.html" | quote }}
+        disable-swagger-default-url: {{ .Values.springdoc.swaggerUi.disableSwaggerDefaultUrl | default true }}
+        operationsSorter: {{ .Values.springdoc.swaggerUi.operationsSorter | default "alpha" | quote }}
+        tagsSorter: {{ .Values.springdoc.swaggerUi.tagsSorter | default "alpha" | quote }}
+        try-it-out-enabled: {{ .Values.springdoc.swaggerUi.tryItOutEnabled | default true }}
         oauth:
           client-id: {{ required "springdoc.swaggerUi.oauth.clientId is required!" .Values.springdoc.swaggerUi.oauth.clientId | quote }}
 
@@ -57,6 +76,10 @@ data:
 {{- end }}
 
     aiteza:
+      files:
+        chat-file-expiration-days: {{ .Values.aiteza.files.chatFileExpirationDays | default 7 }}
+        cleanup-schedule: {{ .Values.aiteza.files.cleanupSchedule | default "0 0 2 * * *" | quote }}
+        cleanup-batch-size: {{ .Values.aiteza.files.cleanupBatchSize | default 10 }}
       audit:
         enabled: {{ .Values.aiteza.audit.enabled | default true }}
 {{- if .Values.aiteza.audit.enabled }}
@@ -73,11 +96,10 @@ data:
         url: {{ required "aiteza.litellm.url is required!" .Values.aiteza.litellm.url | quote }}
       security:
         public-paths:
-          - "/v3/api-docs/**"
-          - "/doc/**"
-          - "/actuator/**"
-          - "/v1/**"
-      frontend-origin: {{ required "aiteza.frontendOrigin is required!" .Values.aiteza.frontendOrigin | quote }}
+{{- range .Values.aiteza.security.publicPaths }}
+          - {{ . | quote }}
+{{- end }}
+        frontend-origin: {{ required "aiteza.frontend-origin is required!" .Values.aiteza.frontendOrigin | quote }}
       schedule:
         websource-cleaner: "0 0/5 * * * *"
       database:
@@ -95,9 +117,13 @@ data:
       keycloak:
         authServerUrl: {{ required "aiteza.keycloak.authServerUrl is required!" .Values.aiteza.keycloak.authServerUrl | quote }}
         realm: {{ required "aiteza.keycloak.realm is required!" .Values.aiteza.keycloak.realm | quote }}
-        clientId: {{ required "aiteza.keycloak.clientId is required!" .Values.aiteza.keycloak.clientId | quote }}
-        adminUsername: ${KEYCLOAK_ADMIN_USERNAME}
-        adminPassword: ${KEYCLOAK_ADMIN_PASSWORD}
+        frontend-client-id: {{ required "aiteza.keycloak.frontendClientId is required!" .Values.aiteza.keycloak.frontendClientId | quote }}
+        backend-client-id: {{ required "aiteza.keycloak.backendClientId is required!" .Values.aiteza.keycloak.backendClientId | quote }}
+        backend-client-secret: ${KEYCLOAK_BACKEND_CLIENT_SECRET}
+        n8n-client-id: {{ required "aiteza.keycloak.n8nClientId is required!" .Values.aiteza.keycloak.n8nClientId | quote }}
+        n8n-client-secret: ${KEYCLOAK_N8N_CLIENT_SECRET}
+        admin-username: ${KEYCLOAK_ADMIN_USERNAME}
+        admin-password: ${KEYCLOAK_ADMIN_PASSWORD}
       etl:
         tika:
           endpoint: {{ required "aiteza.etl.tika.endpoint is required!" .Values.aiteza.etl.tika.endpoint | quote }}
@@ -109,12 +135,28 @@ data:
           convert-async-endpoint: {{ .Values.aiteza.etl.docling.convertAsyncEndpoint | default "/v1/convert/source/async" | quote }}
           result-endpoint: {{ .Values.aiteza.etl.docling.resultEndpoint | default "/v1/result" | quote }}
           status-endpoint: {{ .Values.aiteza.etl.docling.statusEndpoint | default "/v1/status/poll" | quote }}
+          max-polling-attempts: {{ .Values.aiteza.etl.docling.maxPollingAttempts | default 2160 }}
+          polling-interval-in-seconds: {{ .Values.aiteza.etl.docling.pollingIntervalInSeconds | default 10 }}
           do-ocr: {{ .Values.aiteza.etl.docling.doOcr | default true }}
+          force-ocr: {{ .Values.aiteza.etl.docling.forceOcr | default false }}
           ocr-engine: {{ .Values.aiteza.etl.docling.ocrEngine | default "easyocr" | quote }}
           pdf-backend: {{ .Values.aiteza.etl.docling.pdfBackend | default "dlparse_v4" | quote }}
           table-mode: {{ .Values.aiteza.etl.docling.tableMode | default "accurate" | quote }}
+          image-export-mode: {{ .Values.aiteza.etl.docling.imageExportMode | default "placeholder" | quote }}
+          abort-on-error: {{ .Values.aiteza.etl.docling.abortOnError | default false }}
+          return-as-file: {{ .Values.aiteza.etl.docling.returnAsFile | default false }}
+          do-table-structure: {{ .Values.aiteza.etl.docling.doTableStructure | default true }}
+          include-images: {{ .Values.aiteza.etl.docling.includeImages | default true }}
+          images-scale: {{ .Values.aiteza.etl.docling.imagesScale | default 2 }}
+          do-code-enrichment: {{ .Values.aiteza.etl.docling.doCodeEnrichment | default false }}
+          do-formula-enrichment: {{ .Values.aiteza.etl.docling.doFormulaEnrichment | default false }}
+          do-picture-classification: {{ .Values.aiteza.etl.docling.doPictureClassification | default false }}
+          do-picture-description: {{ .Values.aiteza.etl.docling.doPictureDescription | default false }}
           from-formats: {{ .Values.aiteza.etl.docling.fromFormats | default (list "docx" "pptx" "html" "image" "pdf" "md" "csv" "xlsx" "audio") | toJson }}
           vlm-pipeline-options:
+            headers: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.headers | toJson }}
+            params: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.params | toJson }}
+            response-format: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.responseFormat | quote }}
             concurrency: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.concurrency | default 4 }}
             timeout: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.timeout | default 240 }}
             scale: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.scale | default "2.0" | quote }}
@@ -139,9 +181,11 @@ data:
         full-text-weight: {{ required "aiteza.search.fullTextWeight is required!" .Values.aiteza.search.fullTextWeight }}
       chatNameModel: {{ required "aiteza.chatNameModel is required!" .Values.aiteza.chatNameModel | quote }}
       repromptModel: {{ required "aiteza.repromptModel is required!" .Values.aiteza.repromptModel | quote }}
+      imageDescriptionModel: {{ required "aiteza.imageDescriptionModel is required!" .Values.aiteza.imageDescriptionModel | quote }}
+      hallucination-detection-model: {{ .Values.aiteza.hallucinationDetectionModel | quote }}
       models:
         health:
-          timeoutSeconds: 5
+          timeout-seconds: {{ .Values.aiteza.models.health.timeoutSeconds | default 20 }}
 {{- $models := required "aiteza.models is required!" .Values.aiteza.models }}
 {{- range $modelName, $model := $models }}
         {{ $modelName }}:
@@ -155,10 +199,18 @@ data:
           icon: {{ $model.icon | quote }}
           type: {{ $model.type | quote }}
           endpoint: {{ $model.endpoint | quote }}
+          external-hostname: {{ $model.externalHostname | quote }}
+          reasoning-effort: {{ $model.reasoningEffort | default "default" | quote }}
+          vlm-pipeline: {{ $model.vlmPipeline | default false }}
           chunks: {{ $model.chunks | default 20 }}
           api-key: ${AITEZA_{{ upper $modelName | replace "-" "_" }}_API_KEY}
 {{- if $model.options }}
           options:
 {{ toYaml $model.options | indent 12 }}
+{{- end }}
+{{- if $model.capabilities }}
+          capabilities:
+{{ toYaml $model.capabilities | indent 12 }}
+{{- end }}
 {{- end }}
 {{- end }}
