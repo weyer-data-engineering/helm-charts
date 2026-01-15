@@ -124,7 +124,7 @@ spring:
       embedding:
         apiKey: "sk-test"
         options:
-           model: "nomic-embed-text:v1.5"
+          model: "nomic-embed-text:v1.5"
 
 server:
   compression:
