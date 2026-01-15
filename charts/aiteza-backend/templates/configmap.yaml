@@ -26,12 +26,10 @@ data:
               dimensions: {{ .Values.spring.ai.openai.embedding.options.dimensions | default 768 }}
               model: {{ .Values.spring.ai.openai.embedding.options.model | default "nomic-embed-text:v1.5" | quote }}
               temperature: {{ .Values.spring.ai.openai.embedding.options.temperature | default 0.2 }}
-      codec:
-        max-in-memory-size: {{ .Values.spring.codec.maxInMemorySize | default "500KB" | quote }}
-        servlet:
-          multipart:
-            max-file-size: {{ .Values.spring.servlet.multipart.maxFileSize | default "400MB" | quote }}
-            max-request-size: {{ .Values.spring.servlet.multipart.maxRequestSize | default "400MB" | quote }}
+      servlet:
+        multipart:
+          max-file-size: {{ .Values.spring.servlet.multipart.maxFileSize | default "400MB" | quote }}
+          max-request-size: {{ .Values.spring.servlet.multipart.maxRequestSize | default "400MB" | quote }}
 
     server:
       port: {{ .Values.service.httpPort | default 80 }}
@@ -99,7 +97,7 @@ data:
 {{- range .Values.aiteza.security.publicPaths }}
           - {{ . | quote }}
 {{- end }}
-        frontend-origin: {{ required "aiteza.frontend-origin is required!" .Values.aiteza.frontendOrigin | quote }}
+        frontend-origin: {{ required "aiteza.frontendOrigin is required!" .Values.aiteza.frontendOrigin | quote }}
       schedule:
         websource-cleaner: "0 0/5 * * * *"
       database:
@@ -185,7 +183,7 @@ data:
       hallucination-detection-model: {{ .Values.aiteza.hallucinationDetectionModel | quote }}
       models:
         health:
-          timeout-seconds: {{ .Values.aiteza.models.health.timeoutSeconds | default 20 }}
+          timeoutSeconds: {{ .Values.aiteza.models.health.timeoutSeconds | default 20 }}
 {{- $models := required "aiteza.models is required!" .Values.aiteza.models }}
 {{- range $modelName, $model := $models }}
         {{ $modelName }}:
