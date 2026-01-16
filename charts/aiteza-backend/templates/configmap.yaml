@@ -98,8 +98,6 @@ data:
           - {{ . | quote }}
 {{- end }}
         frontend-origin: {{ required "aiteza.frontendOrigin is required!" .Values.aiteza.frontendOrigin | quote }}
-      schedule:
-        websource-cleaner: "0 0/5 * * * *"
       database:
         connection-pool:
           min-idle: {{ .Values.aiteza.database.connectionPool.minIdle | default 5 }}
@@ -152,8 +150,16 @@ data:
           do-picture-description: {{ .Values.aiteza.etl.docling.doPictureDescription | default false }}
           from-formats: {{ .Values.aiteza.etl.docling.fromFormats | default (list "docx" "pptx" "html" "image" "pdf" "md" "csv" "xlsx" "audio") | toJson }}
           vlm-pipeline-options:
+{{- if .Values.aiteza.etl.docling.vlmPipelineOptions.headers }}
+{{- if gt (len .Values.aiteza.etl.docling.vlmPipelineOptions.headers) 0 }}
             headers: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.headers | toJson }}
+{{- end }}
+{{- end }}
+{{- if .Values.aiteza.etl.docling.vlmPipelineOptions.params }}
+{{- if gt (len .Values.aiteza.etl.docling.vlmPipelineOptions.params) 0 }}
             params: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.params | toJson }}
+{{- end }}
+{{- end }}
             response-format: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.responseFormat | quote }}
             concurrency: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.concurrency | default 4 }}
             timeout: {{ .Values.aiteza.etl.docling.vlmPipelineOptions.timeout | default 240 }}
@@ -205,11 +211,11 @@ data:
           api-key: ${AITEZA_{{ upper $modelName | replace "-" "_" }}_API_KEY}
 {{- if $model.options }}
           options:
-{{ toYaml $model.options | indent 12 }}
+{{ $model.options | toYaml | indent 12 }}
 {{- end }}
 {{- if $model.capabilities }}
           capabilities:
-{{ toYaml $model.capabilities | indent 12 }}
+{{ $model.capabilities | toYaml | indent 12 }}
 {{- end }}
 {{- end }}
 {{- end }}
