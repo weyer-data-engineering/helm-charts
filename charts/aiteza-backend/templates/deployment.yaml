@@ -67,6 +67,11 @@ spec:
                   key: {{ $model.secretRef.keys.apiKey }}
             {{- end }}
             {{- end }}
+            - name: OPENAI_EMBEDDING_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "spring.ai.openai.embedding.secretRef.name is required!" .Values.spring.ai.openai.embedding.secretRef.name }}
+                  key: {{ .Values.spring.ai.openai.embedding.secretRef.keys.apiKey | default "apiKey" }}
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
@@ -99,6 +104,26 @@ spec:
                 secretKeyRef:
                   name: {{ required "aiteza.keycloak.secretRef.name is required!" .Values.aiteza.keycloak.secretRef.name }}
                   key: {{ .Values.aiteza.keycloak.secretRef.keys.adminPassword | default "adminPassword" }}
+            {{- if .Values.aiteza.keycloak.secretRef.keys.backendClientSecret }}
+            - name: KEYCLOAK_BACKEND_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "aiteza.keycloak.secretRef.name is required!" .Values.aiteza.keycloak.secretRef.name }}
+                  key: {{ .Values.aiteza.keycloak.secretRef.keys.backendClientSecret }}
+            {{- else }}
+            - name: KEYCLOAK_BACKEND_CLIENT_SECRET
+              value: "none"
+            {{- end }}
+            {{- if .Values.aiteza.keycloak.secretRef.keys.n8nClientSecret }}
+            - name: KEYCLOAK_N8N_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "aiteza.keycloak.secretRef.name is required!" .Values.aiteza.keycloak.secretRef.name }}
+                  key: {{ .Values.aiteza.keycloak.secretRef.keys.n8nClientSecret }}
+            {{- else }}
+            - name: KEYCLOAK_N8N_CLIENT_SECRET
+              value: "none"
+            {{- end }}
             - name: FIRECRAWL_API_KEY
               valueFrom:
                 secretKeyRef:
