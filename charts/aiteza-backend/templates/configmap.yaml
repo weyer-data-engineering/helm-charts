@@ -205,7 +205,7 @@ data:
           type: {{ $model.type | quote }}
           endpoint: {{ $model.endpoint | quote }}
           external-hostname: {{ $model.externalHostname | quote }}
-          reasoning-effort: {{ $model.reasoningEffort | default "default" | quote }}
+          reasoning-effort: {{ $model.reasoningEffort | quote }}
           vlm-pipeline: {{ $model.vlmPipeline | default false }}
           chunks: {{ $model.chunks | default 20 }}
           api-key: ${AITEZA_{{ upper $modelName | replace "-" "_" }}_API_KEY}
