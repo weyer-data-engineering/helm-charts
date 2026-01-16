@@ -104,7 +104,9 @@ aiteza:
       enabled: true
       selectable: false
       multiModal: false
-      vlm-pipeline: true
+      externalHostname: test.external.local
+      reasoningEffort: "low"
+      vlmPipeline: true
       icon: "openai.svg"
       type: "chat"
       endpoint: "https://api.openai.com"
