@@ -186,6 +186,7 @@ data:
           timeoutSeconds: {{ .Values.aiteza.models.health.timeoutSeconds | default 20 }}
 {{- $models := required "aiteza.models is required!" .Values.aiteza.models }}
 {{- range $modelName, $model := $models }}
+{{- if ne $modelName "health" }}
         {{ $modelName }}:
           model: {{ $model.model | quote }}
           name: {{ $model.name | quote }}
@@ -209,5 +210,6 @@ data:
 {{- if $model.capabilities }}
           capabilities:
 {{ toYaml $model.capabilities | indent 12 }}
+{{- end }}
 {{- end }}
 {{- end }}
