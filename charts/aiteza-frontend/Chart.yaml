@@ -4,3 +4,4 @@ description: A Helm chart for AITEZA Frontend
 type: application
 version: 1.7.3
 appVersion: 1.7.3
+icon: https://weyer-data-engineering.com/logos/AITEZA_bildlogo_1c_hellblau.svg

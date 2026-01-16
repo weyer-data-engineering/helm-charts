@@ -20,7 +20,7 @@ data:
             enabled: false
           embedding:
             enabled: true
-            api-key: {{ required "spring.ai.openai.embedding.apiKey is required!" .Values.spring.ai.openai.embedding.apiKey | quote }}
+            api-key: ${OPENAI_EMBEDDING_API_KEY}
             embeddings-path: {{ .Values.spring.ai.openai.embedding.embeddingsPath | default "/v1/embeddings" | quote }}
             options:
               dimensions: {{ .Values.spring.ai.openai.embedding.options.dimensions | default 768 }}
@@ -209,6 +209,5 @@ data:
 {{- if $model.capabilities }}
           capabilities:
 {{ toYaml $model.capabilities | indent 12 }}
-{{- end }}
 {{- end }}
 {{- end }}

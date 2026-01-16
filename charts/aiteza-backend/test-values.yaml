@@ -30,6 +30,8 @@ aiteza:
     secretRef:
       name: aiteza-keycloak-secret
       keys:
+        adminUsername: "adminUsername"
+        adminPassword: "adminPassword"
         backendClientSecret: backendClientSecret
         n8nClientSecret: n8nClientSecret
   etl:
@@ -122,7 +124,10 @@ spring:
     openai:
       baseUrl: http://openai.local
       embedding:
-        apiKey: "sk-test"
+        secretRef:
+          name: aiteza-openai-embedding-secret
+          keys:
+            apiKey: apiKey
         options:
           model: "nomic-embed-text:v1.5"
 

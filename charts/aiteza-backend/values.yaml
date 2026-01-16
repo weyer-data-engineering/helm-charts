@@ -79,8 +79,8 @@ aiteza:
       keys:
         adminUsername: "adminUsername"
         adminPassword: "adminPassword"
-        backendClientSecret: "backendClientSecret"
-        n8nClientSecret: "n8nClientSecret"
+        backendClientSecret: ""
+        n8nClientSecret: ""
   etl:
     tika:
       endpoint: ""
@@ -166,8 +166,11 @@ spring:
     openai:
       baseUrl: ""
       embedding:
-        apiKey: "sk-your-embedding-api-key-here"
         embeddingsPath: "/v1/embeddings"
+        secretRef:
+          name: ""
+          keys:
+            apiKey: "apiKey"
         options:
           dimensions: 768
           model: "nomic-embed-text:v1.5"
