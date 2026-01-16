@@ -199,14 +199,22 @@ data:
           description: {{ $model.description | quote }}
           default-model: {{ $model.defaultModel | default false }}
           enabled: {{ $model.enabled | default false }}
-          selectable: {{ if hasKey $model "selectable" }}{{ $model.selectable }}{{ else }}true{{ end }}
+{{- if hasKey $model "selectable" }}
+          selectable: {{ $model.selectable }}
+{{- end }}
           multi-modal: {{ $model.multiModal | default false }}
           icon: {{ $model.icon | quote }}
           type: {{ $model.type | quote }}
           endpoint: {{ $model.endpoint | quote }}
+{{- if $model.externalHostname }}
           external-hostname: {{ $model.externalHostname | quote }}
+{{- end }}
+{{- if $model.reasoningEffort }}
           reasoning-effort: {{ $model.reasoningEffort | quote }}
-          vlm-pipeline: {{ $model.vlmPipeline | default false }}
+{{- end }}
+{{- if hasKey $model "vlmPipeline" }}
+          vlm-pipeline: {{ $model.vlmPipeline }}
+{{- end }}
           chunks: {{ $model.chunks | default 20 }}
           api-key: ${AITEZA_{{ upper $modelName | replace "-" "_" }}_API_KEY}
 {{- if $model.options }}
