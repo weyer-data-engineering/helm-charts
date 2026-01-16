@@ -77,7 +77,7 @@ aiteza:
         name: aiteza-search-reranking-secret
   models:
     health:
-      timeoutInSeconds: 300
+      timeoutSeconds: 300
     model1:
       model: "gpt-4"
       name: "GPT-4"
