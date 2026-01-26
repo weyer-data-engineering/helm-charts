@@ -2,6 +2,6 @@ apiVersion: v2
 name: aiteza-backend
 description: A Helm chart for AITEZA Backend
 type: application
-version: 1.7.3
-appVersion: 1.7.3
+version: 1.8.0
+appVersion: 1.8.0
 icon: https://weyer-data-engineering.com/logos/AITEZA_bildlogo_1c_hellblau.svg
