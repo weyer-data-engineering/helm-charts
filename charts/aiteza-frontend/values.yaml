@@ -59,9 +59,6 @@ securityContext:
   runAsGroup: 101
   allowPrivilegeEscalation: false
   readOnlyRootFilesystem: false
-  capabilities:
-    drop:
-    - ALL
   seccompProfile:
     type: RuntimeDefault
 
