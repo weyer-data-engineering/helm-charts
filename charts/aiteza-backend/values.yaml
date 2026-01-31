@@ -41,15 +41,39 @@ aiteza:
   repromptModel: ""
   imageDescriptionModel: ""
   search:
+    # Enable or disable reranking for search results
     reranking:
       enabled: false
+      # Host for the reranking service. Calls the /v2/rerank endpoint.
       endpoint: ""
       model: ""
+      # Minimum relevance score for reranked results. Results below this score will be filtered out.
+      threshold: 0.3
       secretRef:
         name: ""
         keys:
           apiKey: "apiKey"
+    # Configuration for search query optimization (reprompting)
+    reprompting:
+      enabled: true
+      model: "gpt-41-nano"
+      # Number of search queries to generate from a single user query.
+      # Each query explores a different aspect of the user's question.
+      queryCount: 3
+    # Configuration for file name search (identifies mentioned files in user queries)
+    fileNameSearch:
+      enabled: true
+      model: "gpt-41-nano"
+    # Similarity threshold for vector search results. Results below this threshold will be filtered out.
+    vectorThreshold: 0.35
+    # Weight for full-text search results. Higher values give more importance to full-text search in datarooms.
     fullTextWeight: 0.7
+    # Number of raw results to fetch per dataroom before the first reranking stage.
+    # Higher values improve recall but increase reranking API costs.
+    initialFetchSize: 50
+    # Number of results to keep per dataroom after the first reranking stage.
+    # These results are then combined for cross-dataroom reranking.
+    perDataroomTopK: 10
   models:
     health:
       timeoutSeconds: 20
