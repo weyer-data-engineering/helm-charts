@@ -73,8 +73,20 @@ aiteza:
       enabled: true
       endpoint: "https://api.cohere.com/v2/rerank"
       model: "rerank-v3.5"
+      threshold: 0.3
       secretRef:
         name: aiteza-search-reranking-secret
+    reprompting:
+      enabled: true
+      model: "gpt-41-nano"
+      queryCount: 3
+    fileNameSearch:
+      enabled: true
+      model: "gpt-41-nano"
+    vectorThreshold: 0.35
+    fullTextWeight: 0.7
+    initialFetchSize: 50
+    perDataroomTopK: 10
   models:
     health:
       timeoutSeconds: 300
@@ -102,6 +114,7 @@ aiteza:
       description: "OpenAI GPT-3.5 Turbo model"
       defaultModel: false
       enabled: true
+      replacedBy: model1
       selectable: false
       multiModal: false
       externalHostname: test.external.local

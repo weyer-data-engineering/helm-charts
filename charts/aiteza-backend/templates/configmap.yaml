@@ -175,14 +175,29 @@ data:
             num-results: {{ .Values.aiteza.etl.firecrawl.search.numResults | default 5 }}
             timeout-in-seconds: {{ .Values.aiteza.etl.firecrawl.search.timeoutInSeconds | default 90 }}
       search:
+{{- if .Values.aiteza.search.reranking }}
         reranking:
           enabled: {{ .Values.aiteza.search.reranking.enabled | default false }}
-{{- if .Values.aiteza.search.reranking.enabled }}
           endpoint: {{ .Values.aiteza.search.reranking.endpoint | quote }}
           model: {{ .Values.aiteza.search.reranking.model | quote }}
           api-key: ${RERANKING_API_KEY}
+          threshold: {{ .Values.aiteza.search.reranking.threshold | default 0.1 }}
 {{- end }}
+{{- if .Values.aiteza.search.reprompting }}
+        reprompting:
+          enabled: {{ .Values.aiteza.search.reprompting.enabled | default true }}
+          model: {{ .Values.aiteza.search.reprompting.model | quote }}
+          query-count: {{ .Values.aiteza.search.reprompting.queryCount | default 3 }}
+{{- end }}
+{{- if .Values.aiteza.search.fileNameSearch }}
+        file-name-search:
+          enabled: {{ .Values.aiteza.search.fileNameSearch.enabled | default true }}
+          model: {{ .Values.aiteza.search.fileNameSearch.model | quote }}
+{{- end }}
+        vector-threshold: {{ .Values.aiteza.search.vectorThreshold | default 0.3 }}
         full-text-weight: {{ required "aiteza.search.fullTextWeight is required!" .Values.aiteza.search.fullTextWeight }}
+        initial-fetch-size: {{ .Values.aiteza.search.initialFetchSize | default 50 }}
+        per-dataroom-top-k: {{ .Values.aiteza.search.perDataroomTopK | default 10 }}
       chatNameModel: {{ required "aiteza.chatNameModel is required!" .Values.aiteza.chatNameModel | quote }}
       repromptModel: {{ required "aiteza.repromptModel is required!" .Values.aiteza.repromptModel | quote }}
       imageDescriptionModel: {{ required "aiteza.imageDescriptionModel is required!" .Values.aiteza.imageDescriptionModel | quote }}
@@ -199,6 +214,9 @@ data:
           description: {{ $model.description | quote }}
           default-model: {{ $model.defaultModel | default false }}
           enabled: {{ $model.enabled | default false }}
+{{- if hasKey $model "replacedBy" }}
+          replacedBy: {{ $model.replacedBy }}
+{{- end }}
 {{- if hasKey $model "selectable" }}
           selectable: {{ $model.selectable }}
 {{- end }}
