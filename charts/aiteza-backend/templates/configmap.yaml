@@ -214,6 +214,9 @@ data:
           description: {{ $model.description | quote }}
           default-model: {{ $model.defaultModel | default false }}
           enabled: {{ $model.enabled | default false }}
+{{- if hasKey $model "replacedBy" }}
+          replacedBy: {{ $model.replacedBy }}
+{{- end }}
 {{- if hasKey $model "selectable" }}
           selectable: {{ $model.selectable }}
 {{- end }}

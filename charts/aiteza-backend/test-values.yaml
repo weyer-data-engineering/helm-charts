@@ -114,6 +114,7 @@ aiteza:
       description: "OpenAI GPT-3.5 Turbo model"
       defaultModel: false
       enabled: true
+      replacedBy: model1
       selectable: false
       multiModal: false
       externalHostname: test.external.local
