@@ -195,7 +195,7 @@ data:
           model: {{ .Values.aiteza.search.fileNameSearch.model | quote }}
 {{- end }}
         vector-threshold: {{ .Values.aiteza.search.vectorThreshold | default 0.3 }}
-        full-text-weight: {{ .Values.aiteza.search.fullTextWeight | default 0.7 }}
+        full-text-weight: {{ required "aiteza.search.fullTextWeight is required!" .Values.aiteza.search.fullTextWeight }}
         initial-fetch-size: {{ .Values.aiteza.search.initialFetchSize | default 50 }}
         per-dataroom-top-k: {{ .Values.aiteza.search.perDataroomTopK | default 10 }}
       chatNameModel: {{ required "aiteza.chatNameModel is required!" .Values.aiteza.chatNameModel | quote }}
