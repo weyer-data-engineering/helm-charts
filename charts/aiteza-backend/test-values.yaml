@@ -9,6 +9,7 @@ aiteza:
     frontendOrigins:
       - http://localhost:5173
   audit:
+    enabled: true
     lokiUrl: http://localhost:3100
     secretRef:
       name: "aiteza-loki-secret"

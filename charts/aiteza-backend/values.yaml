@@ -16,7 +16,7 @@ aiteza:
     cleanupSchedule: "0 0 2 * * *"
     cleanupBatchSize: 10
   audit:
-    enabled: true
+    enabled: false
     lokiUrl: ""
     jobLabel: aiteza-audit
     connectionTimeout: 5000

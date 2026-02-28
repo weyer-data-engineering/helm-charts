@@ -79,7 +79,7 @@ data:
         cleanup-schedule: {{ .Values.aiteza.files.cleanupSchedule | default "0 0 2 * * *" | quote }}
         cleanup-batch-size: {{ .Values.aiteza.files.cleanupBatchSize | default 10 }}
       audit:
-        enabled: {{ .Values.aiteza.audit.enabled | default true }}
+        enabled: {{ .Values.aiteza.audit.enabled | default false }}
 {{- if .Values.aiteza.audit.enabled }}
         loki-url: {{ required "aiteza.audit.lokiUrl is required!" .Values.aiteza.audit.lokiUrl | quote }}
         job-label: {{ .Values.aiteza.audit.jobLabel | default "aiteza-audit" | quote }}
