@@ -19,7 +19,7 @@ ingress:
   tls:
     secretName: frontend-local-tls
 
-securityContext: # in test
+securityContext:
   runAsNonRoot: false
   runAsUser: 
   runAsGroup: 
