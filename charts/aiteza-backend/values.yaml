@@ -35,8 +35,7 @@ aiteza:
       - "/actuator/**"
       - "/v1/**"
       - "/api/**"
-    frontendOrigins:
-      - ""
+    frontendOrigins: []
   hallucinationDetectionModel: ""
   chatNameModel: ""
   imageDescriptionModel: ""

@@ -94,12 +94,16 @@ data:
         url: {{ required "aiteza.litellm.url is required!" .Values.aiteza.litellm.url | quote }}
       security:
         public-paths:
-{{- range index .Values.aiteza.security.publicPaths }}
+{{- range .Values.aiteza.security.publicPaths }}
+{{- if . }}
           - {{ . | quote }}
 {{- end }}
+{{- end }}
         frontend-origins:
-{{- range index .Values.aiteza.security.frontendOrigins }}
+{{- range .Values.aiteza.security.frontendOrigins }}
+{{- if . }}
           - {{ . | quote }}
+{{- end }}
 {{- end }}
       database:
         connection-pool:
