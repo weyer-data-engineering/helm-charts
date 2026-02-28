@@ -35,10 +35,10 @@ aiteza:
       - "/actuator/**"
       - "/v1/**"
       - "/api/**"
-    frontendOrigin: ""
+    frontendOrigins:
+      - ""
   hallucinationDetectionModel: ""
   chatNameModel: ""
-  repromptModel: ""
   imageDescriptionModel: ""
   search:
     reranking:
@@ -49,7 +49,17 @@ aiteza:
         name: ""
         keys:
           apiKey: "apiKey"
+    reprompting:
+      enabled: false
+      model: ""
+      queryCount: 3
+    fileNameSearch:
+      enabled: false
+      model: ""
+    vectorThreshold: 0.3
     fullTextWeight: 0.7
+    initialFetchSize: 50
+    perDataroomTopK: 10
   models:
     health:
       timeoutSeconds: 20

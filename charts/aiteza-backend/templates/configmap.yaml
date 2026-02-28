@@ -94,10 +94,13 @@ data:
         url: {{ required "aiteza.litellm.url is required!" .Values.aiteza.litellm.url | quote }}
       security:
         public-paths:
-{{- range .Values.aiteza.security.publicPaths }}
+{{- range index .Values.aiteza.security.publicPaths }}
           - {{ . | quote }}
 {{- end }}
-        frontend-origin: {{ required "aiteza.frontendOrigin is required!" .Values.aiteza.frontendOrigin | quote }}
+        frontend-origins:
+{{- range index .Values.aiteza.security.frontendOrigins }}
+          - {{ . | quote }}
+{{- end }}
       database:
         connection-pool:
           min-idle: {{ .Values.aiteza.database.connectionPool.minIdle | default 5 }}
@@ -182,9 +185,22 @@ data:
           model: {{ .Values.aiteza.search.reranking.model | quote }}
           api-key: ${RERANKING_API_KEY}
 {{- end }}
+        reprompting:
+          enabled: {{ .Values.aiteza.search.reprompting.enabled | default false }}
+{{- if .Values.aiteza.search.reprompting.enabled }}
+          model: {{ .Values.aiteza.search.reprompting.model | quote }}
+          query-count: {{ .Values.aiteza.search.reprompting.queryCount | default 3 }}
+{{- end }}
+        file-name-search:
+          enabled: {{ .Values.aiteza.search.fileNameSearch.enabled | default false }}
+{{- if .Values.aiteza.search.fileNameSearch.enabled }}
+          model: {{ .Values.aiteza.search.fileNameSearch.model | quote }}
+{{- end }}
+        vector-threshold: {{ .Values.aiteza.search.vectorThreshold | default 0.3 }}
         full-text-weight: {{ required "aiteza.search.fullTextWeight is required!" .Values.aiteza.search.fullTextWeight }}
+        initial-fetch-size: {{ .Values.aiteza.search.initialFetchSize | default 50 }}
+        per-dataroom-top-k: {{ .Values.aiteza.search.perDataroomTopK | default 10 }}
       chatNameModel: {{ required "aiteza.chatNameModel is required!" .Values.aiteza.chatNameModel | quote }}
-      repromptModel: {{ required "aiteza.repromptModel is required!" .Values.aiteza.repromptModel | quote }}
       imageDescriptionModel: {{ required "aiteza.imageDescriptionModel is required!" .Values.aiteza.imageDescriptionModel | quote }}
       hallucination-detection-model: {{ .Values.aiteza.hallucinationDetectionModel | quote }}
       models:
@@ -208,6 +224,9 @@ data:
           endpoint: {{ $model.endpoint | quote }}
 {{- if $model.externalHostname }}
           external-hostname: {{ $model.externalHostname | quote }}
+{{- end }}
+{{- if $model.replacedBy }}
+          replaced-by: {{ $model.replacedBy | quote }}
 {{- end }}
 {{- if $model.reasoningEffort }}
           reasoning-effort: {{ $model.reasoningEffort | quote }}

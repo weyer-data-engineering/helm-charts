@@ -2,6 +2,14 @@ imagePullSecrets:
   - name: docker-aiteza
 
 aiteza:
+  security:
+    publicPaths:
+      - "/v3/api-docs/**"
+      - "/doc/**"
+      - "/actuator/**"
+      - "/v1/**"
+    frontendOrigins:
+      - http://localhost:5173
   audit:
     lokiUrl: http://localhost:3100
     secretRef:
@@ -13,10 +21,8 @@ aiteza:
     cleanupSchedule: "0 0 2 * * *"
     cleanupBatchSize: 10
   chatNameModel: model1
-  repromptModel: model1
   hallucinationDetectionModel: model2
   imageDescriptionModel: model1
-  frontendOrigin: http://frontend.local
   database:
     postgres:
       host: database.local
@@ -39,6 +45,12 @@ aiteza:
     firecrawl:
       secretRef:
         name: aiteza-etl-firecrawl-secret
+      maxSubpages: 1000
+      maxDepth: 10
+      endpoint: "https://api.firecrawl.dev"
+      search:
+        numResults: 10
+        timeoutInSeconds: 90
     docling:
       baseUrl: http://docling.local
       maxPollingAttempts: 2160
@@ -75,6 +87,17 @@ aiteza:
       model: "rerank-v3.5"
       secretRef:
         name: aiteza-search-reranking-secret
+    reprompting:
+      enabled: true
+      model: "gpt-41-nano"
+      queryCount: 3
+    fileNameSearch:
+      enabled: true
+      model: "gpt-41-nano"
+    vectorThreshold: 0.3
+    fullTextWeight: 0.6
+    initialFetchSize: 50
+    perDataroomTopK: 10
   models:
     health:
       timeoutSeconds: 300
@@ -90,6 +113,7 @@ aiteza:
       endpoint: "https://api.openai.com"
       chunks: 20
       capabilities:
+        agentRag: true
         disabled-tools:
           - web_search
           - get_webpage_details
@@ -104,6 +128,7 @@ aiteza:
       enabled: true
       selectable: false
       multiModal: false
+      replacedBy: gpt-5
       externalHostname: test.external.local
       reasoningEffort: "low"
       vlmPipeline: true
