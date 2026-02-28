@@ -6,8 +6,6 @@ aiteza:
     publicPaths:
       - "/v3/api-docs/**"
       - "/doc/**"
-      - "/actuator/**"
-      - "/v1/**"
     frontendOrigins:
       - http://localhost:5173
   audit:
