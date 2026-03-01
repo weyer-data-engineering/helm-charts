@@ -131,7 +131,7 @@ data:
         tika:
           endpoint: {{ required "aiteza.etl.tika.endpoint is required!" .Values.aiteza.etl.tika.endpoint | quote }}
         docling:
-          enabled: {{ .Values.aiteza.etl.docling.enabled | default true }}
+          enabled: {{ .Values.aiteza.etl.docling.enabled | default false }}
 {{- if .Values.aiteza.etl.docling.enabled }}
           base-url: {{ required "aiteza.etl.docling.baseUrl is required!" .Values.aiteza.etl.docling.baseUrl | quote }}
           convert-endpoint: {{ .Values.aiteza.etl.docling.convertEndpoint | default "/v1/convert/file" | quote }}
