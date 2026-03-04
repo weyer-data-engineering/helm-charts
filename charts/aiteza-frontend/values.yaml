@@ -1,7 +1,7 @@
 image:
   repository: weyerdataengineering.azurecr.io/aiteza-frontend-new
   tag: ""
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 imagePullSecrets: []
 nameOverride: ""
@@ -82,8 +82,8 @@ autoscaling:
   enabled: true
   minReplicas: 2
   maxReplicas: 5
-  targetCPUUtilizationPercentage: 60
+  targetCPUUtilizationPercentage: 80
 
 podDisruptionBudget:
   enabled: true
-  minAvailable: 50%
+  minAvailable: "50%"

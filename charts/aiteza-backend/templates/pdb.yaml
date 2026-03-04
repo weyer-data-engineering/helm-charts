@@ -9,6 +9,5 @@ spec:
   minAvailable: {{ .Values.podDisruptionBudget.minAvailable | default "50%" }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "aiteza-backend.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      {{- include "aiteza-backend.selectorLabels" . | nindent 6 }}
 {{- end }}

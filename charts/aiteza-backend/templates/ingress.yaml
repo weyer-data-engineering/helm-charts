@@ -30,26 +30,26 @@ spec:
               service:
                 name: {{ $fullName }}
                 port:
-                  number: {{ $.Values.service.httpPort }}
+                  number: {{ .Values.service.httpPort }}
           - path: /v1
             pathType: Prefix
             backend:
               service:
                 name: {{ $fullName }}
                 port:
-                  number: {{ $.Values.service.httpPort }}
+                  number: {{ .Values.service.httpPort }}
           - path: /doc
             pathType: Prefix
             backend:
               service:
                 name: {{ $fullName }}
                 port:
-                  number: {{ $.Values.service.httpPort }}
+                  number: {{ .Values.service.httpPort }}
           - path: /v3/api-docs
             pathType: Prefix
             backend:
               service:
                 name: {{ $fullName }}
                 port:
-                  number: {{ $.Values.service.httpPort }}
+                  number: {{ .Values.service.httpPort }}
 {{- end }}
