@@ -65,8 +65,8 @@ aiteza:
   database:
     connectionPool:
       minIdle: 1
-      max: 15
-      idleTimeout: 300000
+      max: 4
+      idleTimeout: 30000
     postgres:
       host: ""
       port: 5432

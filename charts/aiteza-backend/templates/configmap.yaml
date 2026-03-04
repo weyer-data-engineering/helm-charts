@@ -107,9 +107,9 @@ data:
 {{- end }}
       database:
         connection-pool:
-          min-idle: {{ .Values.aiteza.database.connectionPool.minIdle | default 5 }}
-          max: {{ .Values.aiteza.database.connectionPool.max | default 90 }}
-          idle-timeout: {{ .Values.aiteza.database.connectionPool.idleTimeout | default 5000 }}
+          min-idle: {{ .Values.aiteza.database.connectionPool.minIdle | default 1 }}
+          max: {{ .Values.aiteza.database.connectionPool.max | default 4 }}
+          idle-timeout: {{ .Values.aiteza.database.connectionPool.idleTimeout | default 30000 }}
         postgres:
           host: {{ required "aiteza.database.postgres.host is required!" .Values.aiteza.database.postgres.host | quote }}
           port: {{ .Values.aiteza.database.postgres.port | default 5432 }}
