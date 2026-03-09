@@ -218,6 +218,11 @@ ingress:
   enabled: true
   ingressClassName: ""
   annotations: {}
+  # SSE (Server-Sent Events) specific annotations for nginx ingress.
+  # These are applied automatically in the ingress template for SSE-capable paths.
+  # If using a different ingress controller, override ingress.annotations with
+  # the equivalent settings for your controller.
+  sseTimeoutSeconds: 3600
   host: ""
   tls:
     secretName: ""

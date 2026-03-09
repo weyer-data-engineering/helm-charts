@@ -1,15 +1,20 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "aiteza-backend.fullname" . -}}
+{{- $sseTimeout := .Values.ingress.sseTimeoutSeconds | default 3600 -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
     {{- include "aiteza-backend.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
   annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: {{ $sseTimeout | quote }}
+    nginx.ingress.kubernetes.io/proxy-send-timeout: {{ $sseTimeout | quote }}
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+    {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- end }}
 spec:
   {{- if .Values.ingress.ingressClassName }}
   ingressClassName: {{ .Values.ingress.ingressClassName }}
