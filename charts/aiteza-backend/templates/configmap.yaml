@@ -108,7 +108,6 @@ data:
         tenant-claim: {{ .Values.aiteza.security.tenantClaim | default "tenant_id" | quote }}
         audit-tenant-claim: {{ .Values.aiteza.security.auditTenantClaim | default "audit_tenant_id" | quote }}
         cost-allocate-tenant-claim: {{ .Values.aiteza.security.costAllocateTenantClaim | default "cost_tenant_id" | quote }}
-
       database:
         connection-pool:
           min-idle: {{ .Values.aiteza.database.connectionPool.minIdle | default 1 }}
