@@ -36,6 +36,9 @@ aiteza:
       - "/v1/**"
       - "/api/**"
     frontendOrigins: []
+    tenantClaim: ""
+    auditTenantClaim: ""
+    costAllocateTenantClaim: ""
   hallucinationDetectionModel: ""
   chatNameModel: ""
   imageDescriptionModel: ""

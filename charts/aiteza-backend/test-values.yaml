@@ -8,6 +8,9 @@ aiteza:
       - "/doc/**"
     frontendOrigins:
       - http://localhost:5173
+    tenant-claim: "tenant_id"
+    audit-tenant-claim: "audit_tenant_id"
+    cost-allocate-tenant-claim: "cost_tenant_id"
   audit:
     enabled: true
     lokiUrl: http://localhost:3100
