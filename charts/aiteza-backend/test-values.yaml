@@ -190,6 +190,12 @@ springdoc:
 
 environmentSecrets: []
 
+serviceMonitor:
+  enabled: true
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+
 ingress:
   enabled: true
   ingresscClassName: traefik
