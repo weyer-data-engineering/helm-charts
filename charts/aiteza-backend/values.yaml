@@ -99,6 +99,10 @@ aiteza:
     docling:
       enabled: true
       baseUrl: ""
+      secretRef:
+        name: ""
+        keys:
+          apiKey: "apiKey"
       putTarget:
         enabled: true
         callbackBaseUrl: "http://host.docker.internal:8080"

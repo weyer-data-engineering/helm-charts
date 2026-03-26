@@ -137,6 +137,9 @@ data:
           enabled: {{ .Values.aiteza.etl.docling.enabled | default false }}
 {{- if .Values.aiteza.etl.docling.enabled }}
           base-url: {{ required "aiteza.etl.docling.baseUrl is required!" .Values.aiteza.etl.docling.baseUrl | quote }}
+{{- if .Values.aiteza.etl.docling.secretRef.name }}
+          api-key: ${DOCLING_API_KEY}
+{{- end }}
           put-target:
             enabled: {{ .Values.aiteza.etl.docling.putTarget.enabled | default true }}
 {{- if .Values.aiteza.etl.docling.putTarget.enabled }}
