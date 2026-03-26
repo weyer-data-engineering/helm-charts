@@ -143,7 +143,7 @@ data:
           put-target:
             enabled: {{ .Values.aiteza.etl.docling.putTarget.enabled | default true }}
 {{- if .Values.aiteza.etl.docling.putTarget.enabled }}
-            callback-base-url: {{ .Values.aiteza.etl.docling.putTarget.callbackBaseUrl | default "http://host.docker.internal:8080" | quote }}
+            callback-base-url: {{ required "aiteza.etl.docling.putTarget.callbackBaseUrl is required when putTarget is enabled!" .Values.aiteza.etl.docling.putTarget.callbackBaseUrl | quote }}
             shared-secret: ${DOCLING_PUT_TARGET_SHARED_SECRET}
 {{- end }}
           convert-endpoint: {{ .Values.aiteza.etl.docling.convertEndpoint | default "/v1/convert/file" | quote }}
