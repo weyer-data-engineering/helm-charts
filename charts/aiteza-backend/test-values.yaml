@@ -55,6 +55,13 @@ aiteza:
         timeoutInSeconds: 90
     docling:
       baseUrl: http://docling.local
+      usePutTarget: true
+      putTargetCallbackBaseUrl: "http://host.docker.internal:8080"
+      putTargetCallbackPath: "/api/internal/docling/callback"
+      secretRef:
+        name: aiteza-etl-docling-secret
+        keys:
+          putTargetToken: putTargetToken
       maxPollingAttempts: 2160
       pollingIntervalInSeconds: 10
       doOcr: true

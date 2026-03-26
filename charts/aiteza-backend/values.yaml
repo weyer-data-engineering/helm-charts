@@ -99,6 +99,13 @@ aiteza:
     docling:
       enabled: true
       baseUrl: ""
+      usePutTarget: true
+      putTargetCallbackBaseUrl: "http://host.docker.internal:8080"
+      putTargetCallbackPath: "/api/internal/docling/callback"
+      secretRef:
+        name: ""
+        keys:
+          putTargetToken: "putTargetToken"
       convertEndpoint: "/v1/convert/file"
       convertAsyncEndpoint: "/v1/convert/source/async"
       resultEndpoint: "/v1/result"

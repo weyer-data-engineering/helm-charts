@@ -129,6 +129,13 @@ spec:
                 secretKeyRef:
                   name: {{ required "aiteza.etl.firecrawl.secretRef.name is required!" .Values.aiteza.etl.firecrawl.secretRef.name }}
                   key: {{ .Values.aiteza.etl.firecrawl.secretRef.keys.apiKey | default "apiKey" }}
+            {{- if and .Values.aiteza.etl.docling.enabled .Values.aiteza.etl.docling.usePutTarget }}
+            - name: DOCLING_PUT_TARGET_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "aiteza.etl.docling.secretRef.name is required when aiteza.etl.docling.usePutTarget is true!" .Values.aiteza.etl.docling.secretRef.name }}
+                  key: {{ .Values.aiteza.etl.docling.secretRef.keys.putTargetToken | default "putTargetToken" }}
+            {{- end }}
             {{- if .Values.aiteza.search.reranking.enabled }}
             - name: RERANKING_API_KEY
               valueFrom:

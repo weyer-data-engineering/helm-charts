@@ -137,6 +137,10 @@ data:
           enabled: {{ .Values.aiteza.etl.docling.enabled | default false }}
 {{- if .Values.aiteza.etl.docling.enabled }}
           base-url: {{ required "aiteza.etl.docling.baseUrl is required!" .Values.aiteza.etl.docling.baseUrl | quote }}
+          use-put-target: {{ .Values.aiteza.etl.docling.usePutTarget | default true }}
+          put-target-callback-base-url: {{ .Values.aiteza.etl.docling.putTargetCallbackBaseUrl | default "http://host.docker.internal:8080" | quote }}
+          put-target-callback-path: {{ .Values.aiteza.etl.docling.putTargetCallbackPath | default "/api/internal/docling/callback" | quote }}
+          put-target-token: ${DOCLING_PUT_TARGET_TOKEN}
           convert-endpoint: {{ .Values.aiteza.etl.docling.convertEndpoint | default "/v1/convert/file" | quote }}
           convert-async-endpoint: {{ .Values.aiteza.etl.docling.convertAsyncEndpoint | default "/v1/convert/source/async" | quote }}
           result-endpoint: {{ .Values.aiteza.etl.docling.resultEndpoint | default "/v1/result" | quote }}
