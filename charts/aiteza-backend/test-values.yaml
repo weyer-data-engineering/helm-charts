@@ -55,6 +55,16 @@ aiteza:
         timeoutInSeconds: 90
     docling:
       baseUrl: http://docling.local
+      secretRef:
+        name: aiteza-etl-docling-secret
+        keys:
+          apiKey: apiKey
+      putTarget:
+        enabled: true
+        callbackBaseUrl: "http://host.docker.internal:8080"
+        sharedSecret:
+          name: aiteza-etl-docling-secret
+          key: sharedSecret
       maxPollingAttempts: 2160
       pollingIntervalInSeconds: 10
       doOcr: true

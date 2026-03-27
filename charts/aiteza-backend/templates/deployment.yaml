@@ -129,6 +129,20 @@ spec:
                 secretKeyRef:
                   name: {{ required "aiteza.etl.firecrawl.secretRef.name is required!" .Values.aiteza.etl.firecrawl.secretRef.name }}
                   key: {{ .Values.aiteza.etl.firecrawl.secretRef.keys.apiKey | default "apiKey" }}
+            {{- if and .Values.aiteza.etl.docling.enabled .Values.aiteza.etl.docling.secretRef.name }}
+            - name: DOCLING_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.aiteza.etl.docling.secretRef.name }}
+                  key: {{ .Values.aiteza.etl.docling.secretRef.keys.apiKey | default "apiKey" }}
+            {{- end }}
+            {{- if .Values.aiteza.etl.docling.putTarget.enabled }}
+            - name: DOCLING_PUT_TARGET_SHARED_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "aiteza.etl.docling.putTarget.sharedSecret.name is required when aiteza.etl.docling.putTarget.enabled is true!" .Values.aiteza.etl.docling.putTarget.sharedSecret.name }}
+                  key: {{ .Values.aiteza.etl.docling.putTarget.sharedSecret.key | default "sharedSecret" }}
+            {{- end }}
             {{- if .Values.aiteza.search.reranking.enabled }}
             - name: RERANKING_API_KEY
               valueFrom:

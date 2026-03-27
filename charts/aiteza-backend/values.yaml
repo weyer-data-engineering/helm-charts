@@ -99,6 +99,16 @@ aiteza:
     docling:
       enabled: true
       baseUrl: ""
+      secretRef:
+        name: ""
+        keys:
+          apiKey: "apiKey"
+      putTarget:
+        enabled: false
+        callbackBaseUrl: ""
+        sharedSecret:
+          name: ""
+          key: "sharedSecret"
       convertEndpoint: "/v1/convert/file"
       convertAsyncEndpoint: "/v1/convert/source/async"
       resultEndpoint: "/v1/result"
