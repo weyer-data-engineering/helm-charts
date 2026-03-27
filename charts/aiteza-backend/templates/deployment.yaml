@@ -136,7 +136,7 @@ spec:
                   name: {{ .Values.aiteza.etl.docling.secretRef.name }}
                   key: {{ .Values.aiteza.etl.docling.secretRef.keys.apiKey | default "apiKey" }}
             {{- end }}
-            {{- if and .Values.aiteza.etl.docling.enabled .Values.aiteza.etl.docling.putTarget.enabled }}
+            {{- if .Values.aiteza.etl.docling.putTarget.enabled }}
             - name: DOCLING_PUT_TARGET_SHARED_SECRET
               valueFrom:
                 secretKeyRef:
