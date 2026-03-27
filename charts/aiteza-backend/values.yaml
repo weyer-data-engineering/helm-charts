@@ -104,8 +104,8 @@ aiteza:
         keys:
           apiKey: "apiKey"
       putTarget:
-        enabled: true
-        callbackBaseUrl: "http://host.docker.internal:8080"
+        enabled: false
+        callbackBaseUrl: ""
         sharedSecret:
           name: ""
           key: "sharedSecret"
