@@ -60,7 +60,7 @@ aiteza:
         keys:
           apiKey: apiKey
       putTarget:
-        enabled: true
+        enabled: false
         callbackBaseUrl: "http://host.docker.internal:8080"
         sharedSecret:
           name: aiteza-etl-docling-secret

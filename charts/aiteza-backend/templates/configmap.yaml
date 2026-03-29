@@ -34,7 +34,7 @@ data:
     server:
       port: {{ .Values.service.httpPort | default 80 }}
       compression:
-        enabled: {{ .Values.server.compression.enabled | default true }}
+        enabled: {{ .Values.server.compression.enabled }}
         mime-types: {{ .Values.server.compression.mimeTypes | default "text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json" | quote }}
       tomcat:
         max-swallow-size: {{ .Values.server.tomcat.maxSwallowSize | default "100MB" | quote }}
@@ -56,15 +56,15 @@ data:
     springdoc:
       swagger-ui:
         path: {{ .Values.springdoc.swaggerUi.path | default "/doc/swagger-ui.html" | quote }}
-        disable-swagger-default-url: {{ .Values.springdoc.swaggerUi.disableSwaggerDefaultUrl | default true }}
+        disable-swagger-default-url: {{ .Values.springdoc.swaggerUi.disableSwaggerDefaultUrl }}
         operationsSorter: {{ .Values.springdoc.swaggerUi.operationsSorter | default "alpha" | quote }}
         tagsSorter: {{ .Values.springdoc.swaggerUi.tagsSorter | default "alpha" | quote }}
-        try-it-out-enabled: {{ .Values.springdoc.swaggerUi.tryItOutEnabled | default true }}
+        try-it-out-enabled: {{ .Values.springdoc.swaggerUi.tryItOutEnabled }}
         oauth:
           client-id: {{ required "springdoc.swaggerUi.oauth.clientId is required!" .Values.springdoc.swaggerUi.oauth.clientId | quote }}
 
     s3:
-      enabled: {{ .Values.s3.enabled | default false }}
+      enabled: {{ .Values.s3.enabled }}
 {{- if .Values.s3.enabled }}
       endpoint: {{ required "s3.endpoint is required when s3.enabled is true" .Values.s3.endpoint | quote }}
       region: {{ required "s3.region is required when s3.enabled is true" .Values.s3.region | quote }}
@@ -79,7 +79,7 @@ data:
         cleanup-schedule: {{ .Values.aiteza.files.cleanupSchedule | default "0 0 2 * * *" | quote }}
         cleanup-batch-size: {{ .Values.aiteza.files.cleanupBatchSize | default 10 }}
       audit:
-        enabled: {{ .Values.aiteza.audit.enabled | default false }}
+        enabled: {{ .Values.aiteza.audit.enabled }}
 {{- if .Values.aiteza.audit.enabled }}
         loki-url: {{ required "aiteza.audit.lokiUrl is required!" .Values.aiteza.audit.lokiUrl | quote }}
         job-label: {{ .Values.aiteza.audit.jobLabel | default "aiteza-audit" | quote }}
@@ -134,14 +134,14 @@ data:
         tika:
           endpoint: {{ required "aiteza.etl.tika.endpoint is required!" .Values.aiteza.etl.tika.endpoint | quote }}
         docling:
-          enabled: {{ .Values.aiteza.etl.docling.enabled | default false }}
+          enabled: {{ .Values.aiteza.etl.docling.enabled }}
 {{- if .Values.aiteza.etl.docling.enabled }}
           base-url: {{ required "aiteza.etl.docling.baseUrl is required!" .Values.aiteza.etl.docling.baseUrl | quote }}
 {{- if .Values.aiteza.etl.docling.secretRef.name }}
           api-key: ${DOCLING_API_KEY}
 {{- end }}
           put-target:
-            enabled: {{ .Values.aiteza.etl.docling.putTarget.enabled | default true }}
+            enabled: {{ .Values.aiteza.etl.docling.putTarget.enabled }}
 {{- if .Values.aiteza.etl.docling.putTarget.enabled }}
             callback-base-url: {{ required "aiteza.etl.docling.putTarget.callbackBaseUrl is required when putTarget is enabled!" .Values.aiteza.etl.docling.putTarget.callbackBaseUrl | quote }}
             shared-secret: ${DOCLING_PUT_TARGET_SHARED_SECRET}
@@ -152,21 +152,21 @@ data:
           status-endpoint: {{ .Values.aiteza.etl.docling.statusEndpoint | default "/v1/status/poll" | quote }}
           max-polling-attempts: {{ .Values.aiteza.etl.docling.maxPollingAttempts | default 2160 }}
           polling-interval-in-seconds: {{ .Values.aiteza.etl.docling.pollingIntervalInSeconds | default 10 }}
-          do-ocr: {{ .Values.aiteza.etl.docling.doOcr | default true }}
-          force-ocr: {{ .Values.aiteza.etl.docling.forceOcr | default false }}
+          do-ocr: {{ .Values.aiteza.etl.docling.doOcr }}
+          force-ocr: {{ .Values.aiteza.etl.docling.forceOcr }}
           ocr-engine: {{ .Values.aiteza.etl.docling.ocrEngine | default "easyocr" | quote }}
           pdf-backend: {{ .Values.aiteza.etl.docling.pdfBackend | default "dlparse_v4" | quote }}
           table-mode: {{ .Values.aiteza.etl.docling.tableMode | default "accurate" | quote }}
           image-export-mode: {{ .Values.aiteza.etl.docling.imageExportMode | default "placeholder" | quote }}
-          abort-on-error: {{ .Values.aiteza.etl.docling.abortOnError | default false }}
-          return-as-file: {{ .Values.aiteza.etl.docling.returnAsFile | default false }}
-          do-table-structure: {{ .Values.aiteza.etl.docling.doTableStructure | default true }}
-          include-images: {{ .Values.aiteza.etl.docling.includeImages | default true }}
+          abort-on-error: {{ .Values.aiteza.etl.docling.abortOnError }}
+          return-as-file: {{ .Values.aiteza.etl.docling.returnAsFile }}
+          do-table-structure: {{ .Values.aiteza.etl.docling.doTableStructure }}
+          include-images: {{ .Values.aiteza.etl.docling.includeImages }}
           images-scale: {{ .Values.aiteza.etl.docling.imagesScale | default 2 }}
-          do-code-enrichment: {{ .Values.aiteza.etl.docling.doCodeEnrichment | default false }}
-          do-formula-enrichment: {{ .Values.aiteza.etl.docling.doFormulaEnrichment | default false }}
-          do-picture-classification: {{ .Values.aiteza.etl.docling.doPictureClassification | default false }}
-          do-picture-description: {{ .Values.aiteza.etl.docling.doPictureDescription | default false }}
+          do-code-enrichment: {{ .Values.aiteza.etl.docling.doCodeEnrichment }}
+          do-formula-enrichment: {{ .Values.aiteza.etl.docling.doFormulaEnrichment }}
+          do-picture-classification: {{ .Values.aiteza.etl.docling.doPictureClassification }}
+          do-picture-description: {{ .Values.aiteza.etl.docling.doPictureDescription }}
           from-formats: {{ .Values.aiteza.etl.docling.fromFormats | default (list "docx" "pptx" "html" "image" "pdf" "md" "csv" "xlsx" "audio") | toJson }}
           vlm-pipeline-options:
 {{- if .Values.aiteza.etl.docling.vlmPipelineOptions.headers }}
@@ -195,20 +195,20 @@ data:
             timeout-in-seconds: {{ .Values.aiteza.etl.firecrawl.search.timeoutInSeconds | default 90 }}
       search:
         reranking:
-          enabled: {{ .Values.aiteza.search.reranking.enabled | default false }}
+          enabled: {{ .Values.aiteza.search.reranking.enabled }}
 {{- if .Values.aiteza.search.reranking.enabled }}
           endpoint: {{ .Values.aiteza.search.reranking.endpoint | quote }}
           model: {{ .Values.aiteza.search.reranking.model | quote }}
           api-key: ${RERANKING_API_KEY}
 {{- end }}
         reprompting:
-          enabled: {{ .Values.aiteza.search.reprompting.enabled | default false }}
+          enabled: {{ .Values.aiteza.search.reprompting.enabled }}
 {{- if .Values.aiteza.search.reprompting.enabled }}
           model: {{ .Values.aiteza.search.reprompting.model | quote }}
           query-count: {{ .Values.aiteza.search.reprompting.queryCount | default 3 }}
 {{- end }}
         file-name-search:
-          enabled: {{ .Values.aiteza.search.fileNameSearch.enabled | default false }}
+          enabled: {{ .Values.aiteza.search.fileNameSearch.enabled }}
 {{- if .Values.aiteza.search.fileNameSearch.enabled }}
           model: {{ .Values.aiteza.search.fileNameSearch.model | quote }}
 {{- end }}
