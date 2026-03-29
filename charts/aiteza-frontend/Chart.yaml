@@ -2,6 +2,6 @@ apiVersion: v2
 name: aiteza-frontend
 description: A Helm chart for AITEZA Frontend
 type: application
-version: 1.12.0
+version: 1.12.1
 appVersion: 1.12.0
 icon: https://weyer-data-engineering.com/logos/AITEZA_bildlogo_1c_hellblau.svg
